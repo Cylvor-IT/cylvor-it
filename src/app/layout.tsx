@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Cylvor IT | Modern Digital Solutions",
   description: "Web development, UI/UX, and digital services.",
+  icons: {
+    icon: "/assets/icon.png",
+  },
 };
 
 export default function RootLayout({
