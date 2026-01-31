@@ -4,6 +4,18 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Hide the scrollbar (scroll indicator) but keep scrolling enabled */
+html,
 body {
-  @apply bg-slate-950 text-white;
+  -ms-overflow-style: none; /* IE/Edge legacy */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Edge */
+}
+body {
+  @apply bg-black text-white;
 }

@@ -21,9 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-1 z-[9999] rounded-[8px] border border-white shadow-[0_0_0_9999px_rgba(255,255,255,1)] md:inset-2"
+        />
         <Navbar />
         {children}
-        <footer className="py-8 text-center text-slate-600 text-sm bg-black">
+        <footer className="py-10 text-center text-white/60 text-sm bg-black">
           © {new Date().getFullYear()} Cylvor IT. All rights reserved.
         </footer>
       </body>
