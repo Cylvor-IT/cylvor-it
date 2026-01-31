@@ -6,7 +6,7 @@ import Button from "../ui/Button";
 
 /**
  * CUSTOM HOOK: useScrambleText
- * Now includes a 'stop' function to reset text immediately on unhover.
+ * High-speed reveal for instant feedback.
  */
 const useScrambleText = (originalText: string) => {
   const [text, setText] = useState(originalText);
@@ -18,7 +18,7 @@ const useScrambleText = (originalText: string) => {
       clearInterval(frameRef.current);
       frameRef.current = null;
     }
-    setText(originalText); // Reset to original text immediately
+    setText(originalText); 
   };
 
   const startScramble = () => {
@@ -40,15 +40,13 @@ const useScrambleText = (originalText: string) => {
         clearInterval(frameRef.current!);
       }
       
-      // Increased speed slightly (1/6) so it's snappy but readable
-      iteration += 1 / 6; 
-    }, 40); // 40ms for a balanced flicker speed
+      iteration += 1 / 2; // Near-instant reveal
+    }, 25); 
   };
 
   return { text, startScramble, stopScramble };
 };
 
-// Reusable Component for Scramble Text
 const ScrambleItem = ({ children, className }: { children: string, className?: string }) => {
   const { text, startScramble, stopScramble } = useScrambleText(children);
   return (
@@ -72,16 +70,16 @@ export default function Contact() {
       gsap.from(".reveal-text", {
         y: 60,
         opacity: 0,
-        duration: 1.2,
+        duration: 1,
         ease: "power4.out",
-        stagger: 0.15,
+        stagger: 0.1,
       });
 
       gsap.from(formRef.current, {
         y: 40,
         opacity: 0,
-        duration: 1.5,
-        delay: 0.4,
+        duration: 1.2,
+        delay: 0.3,
         ease: "power3.out",
       });
 
@@ -114,7 +112,7 @@ export default function Contact() {
         {/* Header Section */}
         <div className="text-center mb-16 overflow-hidden">
           <span className="inline-block text-red-500 font-mono tracking-[0.3em] uppercase text-xs mb-4 reveal-text cursor-default">
-            <ScrambleItem>CONNECT WITH US</ScrambleItem>
+            CONNECT WITH US
           </span>
           <h2 
             ref={titleRef}
@@ -180,17 +178,11 @@ export default function Contact() {
           </div>
         </form>
 
-        {/* Footer Socials */}
+        {/* Footer Socials - standard transition only */}
         <div className="mt-16 flex justify-center space-x-8 text-zinc-600 font-mono text-[11px] tracking-widest">
-            <a href="#" className="hover:text-white transition-colors">
-              <ScrambleItem>DRIBBBLE</ScrambleItem>
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
-              <ScrambleItem>BEHANCE</ScrambleItem>
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
-              <ScrambleItem>LINKEDIN</ScrambleItem>
-            </a>
+            <a href="#" className="hover:text-white transition-colors uppercase">Dribbble</a>
+            <a href="#" className="hover:text-white transition-colors uppercase">Behance</a>
+            <a href="#" className="hover:text-white transition-colors uppercase">Linkedin</a>
         </div>
       </div>
     </section>
