@@ -31,11 +31,12 @@ export default function Navbar() {
 
   return (
     <nav className={cn(
-      "fixed top-0 w-full z-50 transition-all duration-300 border-b border-transparent",
-      scrolled ? "bg-dark/80 backdrop-blur-md border-slate-800 py-4" : "bg-transparent py-6"
+      "fixed left-3 right-3 top-3 z-50 rounded-[10px] transition-all duration-300 border border-white/10",
+      scrolled ? "bg-black/80 backdrop-blur-md py-3" : "bg-black/40 backdrop-blur-sm py-4",
+      "md:left-4 md:right-4 md:top-4"
     )}>
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <a href="#hero" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-violet-600">
+        <a href="#hero" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-red-500">
           Cylvor IT
         </a>
 
@@ -46,7 +47,7 @@ export default function Navbar() {
               key={item.name} 
               href={item.href}
               onClick={(e) => handleLinkClick(e, item.href)}
-              className="text-sm text-slate-300 hover:text-white hover:text-blue-400 transition-colors"
+              className="text-sm text-white/80 hover:text-red-500 transition-colors"
             >
               {item.name}
             </a>
@@ -61,13 +62,13 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 w-full bg-slate-900 border-b border-slate-800 p-6 md:hidden flex flex-col gap-4">
+        <div className="absolute top-full left-0 w-full bg-black border-t border-white/10 rounded-b-[10px] p-6 md:hidden flex flex-col gap-4">
           {navItems.map((item) => (
             <a 
               key={item.name} 
               href={item.href}
               onClick={(e) => handleLinkClick(e, item.href)}
-              className="text-slate-300 hover:text-blue-400"
+              className="text-white/80 hover:text-red-500"
             >
               {item.name}
             </a>

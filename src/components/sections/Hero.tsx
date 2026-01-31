@@ -21,19 +21,19 @@ export default function Hero() {
   }, { scope: container });
 
   return (
-    <section id="hero" ref={container} className="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-dark to-dark">
+    <section id="hero" ref={container} className="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-24 sm:pt-28 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-black via-black to-black">
       
       {/* Background Glow Element */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-blue-600/20 blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-red-500/20 blur-[100px] rounded-full pointer-events-none" />
 
-      <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold mb-6 tracking-tight relative z-10">
+      <h1 ref={titleRef} className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 tracking-tight relative z-10">
         Transforming Ideas into <br />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-500">
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-red-500">
           Digital Reality
         </span>
       </h1>
 
-      <p ref={subRef} className="text-lg md:text-xl text-slate-400 max-w-2xl mb-10 relative z-10">
+      <p ref={subRef} className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mb-10 relative z-10">
         We are Cylvor IT. We build high-performance websites, web apps, and digital experiences that drive growth for startups and enterprises.
       </p>
 

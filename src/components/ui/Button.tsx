@@ -9,8 +9,8 @@ export default function Button({ className, variant = "primary", ...props }: But
   const baseStyles = "px-6 py-3 rounded-full font-medium transition-all duration-300 active:scale-95";
   
   const variants = {
-    primary: "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/30",
-    outline: "border border-slate-700 hover:border-blue-500 text-slate-300 hover:text-white bg-transparent",
+    primary: "bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/25",
+    outline: "border border-white/25 hover:border-red-500 text-white/85 hover:text-red-500 bg-transparent",
   };
 
   return (
