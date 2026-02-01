@@ -9,7 +9,6 @@ export default function About() {
   const container = useRef(null);
 
   useGSAP(() => {
-    // Text Reveal
     gsap.from(".about-text", {
       scrollTrigger: {
         trigger: container.current,
@@ -21,7 +20,6 @@ export default function About() {
       ease: "power3.out"
     });
 
-    // Counter Animation
     const items = gsap.utils.toArray(".stat-item");
     items.forEach((item: any) => {
       const num = item.querySelector(".stat-num");
@@ -49,20 +47,29 @@ export default function About() {
       <div className="container mx-auto grid md:grid-cols-2 gap-16 items-center">
         <div className="about-text">
           <span className="text-red-600 font-mono text-xs tracking-[0.2em] uppercase mb-4 block">Who We Are</span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight leading-tight">Architects of the <br/> Digital Future</h2>
-          <p className="text-zinc-400 text-lg leading-relaxed">
+          {/* UPDATED: Header font */}
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight leading-tight font-oswald uppercase">
+            Architects of the <br/> Digital Future
+          </h2>
+          <p className="text-zinc-400 text-lg leading-relaxed font-sans">
             Cylvor IT goes beyond code. We are a strategic technology partner dedicated to bridging the gap between complex engineering and intuitive design. We don't just build websites; we build ecosystems.
           </p>
         </div>
         
         <div className="grid grid-cols-2 gap-4">
           <div className="stat-item p-8 bg-zinc-900/30 rounded-2xl border border-white/5 backdrop-blur-sm hover:border-red-600/30 transition-colors">
-            <div className="text-4xl md:text-5xl font-bold text-white mb-2 flex items-baseline"><span className="stat-num">100</span>%</div>
-            <div className="text-zinc-500 text-xs uppercase tracking-widest">Client Satisfaction</div>
+            {/* UPDATED: Numbers are Oswald */}
+            <div className="text-4xl md:text-5xl font-bold text-white mb-2 flex items-baseline font-oswald">
+              <span className="stat-num">100</span>%
+            </div>
+            <div className="text-zinc-500 text-xs uppercase tracking-widest font-sans">Client Satisfaction</div>
           </div>
           <div className="stat-item p-8 bg-zinc-900/30 rounded-2xl border border-white/5 backdrop-blur-sm hover:border-red-600/30 transition-colors">
-            <div className="text-4xl md:text-5xl font-bold text-white mb-2 flex items-baseline"><span className="stat-num">24</span>/7</div>
-            <div className="text-zinc-500 text-xs uppercase tracking-widest">Support System</div>
+            {/* UPDATED: Numbers are Oswald */}
+            <div className="text-4xl md:text-5xl font-bold text-white mb-2 flex items-baseline font-oswald">
+              <span className="stat-num">24</span>/7
+            </div>
+            <div className="text-zinc-500 text-xs uppercase tracking-widest font-sans">Support System</div>
           </div>
         </div>
       </div>

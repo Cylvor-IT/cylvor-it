@@ -5,7 +5,6 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Button from "../ui/Button";
 
-// Custom Scramble Hook
 const useScrambleText = (originalText: string) => {
   const [text, setText] = useState(originalText);
   const chars = "!<>-_\\/[]{}—=+*^?#________";
@@ -52,7 +51,6 @@ export default function Contact() {
   const formRef = useRef(null);
 
   useGSAP(() => {
-    // Reveal text
     gsap.from(".reveal-text", {
       scrollTrigger: {
         trigger: container.current,
@@ -65,7 +63,6 @@ export default function Contact() {
       stagger: 0.1,
     });
 
-    // Form animation
     gsap.from(formRef.current, {
       scrollTrigger: {
         trigger: formRef.current,
@@ -81,7 +78,6 @@ export default function Contact() {
   return (
     <section ref={container} id="contact" className="relative min-h-screen py-24 md:py-32 px-6 bg-black overflow-hidden flex items-center justify-center">
       
-      {/* Background FX */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[100px]" />
          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[100px]" />
@@ -92,7 +88,8 @@ export default function Contact() {
           Connect With Us
         </span>
         
-        <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 reveal-text uppercase leading-none">
+        {/* UPDATED: Main Headline Font */}
+        <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 reveal-text uppercase leading-none font-oswald">
           <ScrambleItem>Start Your</ScrambleItem> <br /> 
           <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600">
              Project
@@ -101,20 +98,20 @@ export default function Contact() {
 
         <form 
           ref={formRef}
-          className="bg-zinc-900/40 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-white/10 text-left w-full shadow-2xl relative overflow-hidden group"
+          className="bg-zinc-900/40 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-white/10 text-left w-full shadow-2xl relative overflow-hidden group font-sans"
         >
-          {/* Subtle Glow on form hover */}
           <div className="absolute inset-0 bg-red-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
 
           <div className="grid md:grid-cols-2 gap-6 mb-6 relative z-10">
-            <input type="text" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-4 focus:border-red-600 focus:outline-none transition-colors text-sm text-white placeholder-zinc-600" placeholder="Name" />
-            <input type="email" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-4 focus:border-red-600 focus:outline-none transition-colors text-sm text-white placeholder-zinc-600" placeholder="Email" />
+            <input type="text" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-4 focus:border-red-600 focus:outline-none transition-colors text-sm text-white placeholder-zinc-600 font-sans" placeholder="Name" />
+            <input type="email" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-4 focus:border-red-600 focus:outline-none transition-colors text-sm text-white placeholder-zinc-600 font-sans" placeholder="Email" />
           </div>
           
-          <textarea rows={4} className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-4 mb-8 focus:border-red-600 focus:outline-none transition-colors text-sm relative z-10 resize-none text-white placeholder-zinc-600" placeholder="Tell us about your idea..." />
+          <textarea rows={4} className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-4 mb-8 focus:border-red-600 focus:outline-none transition-colors text-sm relative z-10 resize-none text-white placeholder-zinc-600 font-sans" placeholder="Tell us about your idea..." />
 
           <div className="text-center relative z-10">
-            <Button className="w-full md:w-auto">Send Inquiry</Button>
+            {/* UPDATED: Button uses Oswald for punchiness */}
+            <Button className="w-full md:w-auto font-oswald tracking-widest">Send Inquiry</Button>
           </div>
         </form>
       </div>

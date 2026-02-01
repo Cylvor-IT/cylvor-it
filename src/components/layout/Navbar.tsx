@@ -35,7 +35,6 @@ export default function Navbar() {
   return (
     <nav 
       ref={navRef}
-      // UPDATED: 'top-4' ensures the navbar looks balanced with the thinner 'inset-1' frame
       className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
     >
       <div className="relative flex items-center justify-between gap-2 p-2 pl-4 pr-2 rounded-full border border-white/10 bg-black/70 backdrop-blur-xl shadow-2xl w-full max-w-2xl transition-all duration-300 hover:border-white/20">
@@ -53,7 +52,8 @@ export default function Navbar() {
             height={28}
             className="w-7 h-7 object-contain"
           />
-          <span className="ml-2 font-bold text-sm tracking-wide hidden sm:block">Cylvor IT</span>
+          {/* UPDATED: Added font-oswald and uppercase for a strong brand look */}
+          <span className="ml-2 font-bold text-sm tracking-wide hidden sm:block font-oswald uppercase">Cylvor IT</span>
         </a>
 
         {/* Desktop Links */}
@@ -62,7 +62,7 @@ export default function Navbar() {
             <button
               key={item.name}
               onClick={() => handleLinkClick(item.href)}
-              className="px-5 py-2 text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300"
+              className="px-5 py-2 text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300 font-sans"
             >
               {item.name}
             </button>
@@ -73,7 +73,7 @@ export default function Navbar() {
         <div className="hidden md:block">
           <button
             onClick={() => handleLinkClick('#contact')}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black text-xs font-bold uppercase tracking-wide hover:bg-zinc-200 transition-colors"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black text-xs font-bold uppercase tracking-wide hover:bg-zinc-200 transition-colors font-oswald"
           >
             Contact
             <ArrowRight className="w-3 h-3" />
@@ -97,7 +97,7 @@ export default function Navbar() {
             <button
               key={item.name}
               onClick={() => handleLinkClick(item.href)}
-              className="w-full text-left px-4 py-3 text-zinc-400 hover:text-white hover:bg-white/5 rounded-xl transition-all text-sm"
+              className="w-full text-left px-4 py-3 text-zinc-400 hover:text-white hover:bg-white/5 rounded-xl transition-all text-sm font-sans"
             >
               {item.name}
             </button>
@@ -105,7 +105,7 @@ export default function Navbar() {
           <div className="h-px bg-white/10 my-1 mx-2" />
           <button
             onClick={() => handleLinkClick("#contact")}
-            className="flex items-center justify-between w-full text-left px-4 py-3 bg-white text-black font-bold text-sm rounded-xl active:scale-95 transition-transform"
+            className="flex items-center justify-between w-full text-left px-4 py-3 bg-white text-black font-bold text-sm rounded-xl active:scale-95 transition-transform font-oswald uppercase"
           >
             Start Project <ArrowRight className="w-4 h-4" />
           </button>
