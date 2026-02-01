@@ -1,21 +1,34 @@
 @import "tailwindcss";
 
-/* Custom styles go BELOW here */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom Scrollbar Hide */
 html {
-  scroll-behavior: smooth;
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
+html::-webkit-scrollbar {
+  display: none; 
 }
 
-/* Hide the scrollbar (scroll indicator) but keep scrolling enabled */
-html,
 body {
-  -ms-overflow-style: none; /* IE/Edge legacy */
-  scrollbar-width: none; /* Firefox */
-}
-
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
-  display: none; /* Chrome/Safari/Edge */
-}
-body {
-  @apply bg-black text-white;
+  @apply bg-black text-white antialiased;
 }

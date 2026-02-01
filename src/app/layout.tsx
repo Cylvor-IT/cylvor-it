@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"; // Using Inter as a standard tech font
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
+import SmoothScroll from "@/components/layout/SmoothScroll";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,16 +21,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div
-          aria-hidden="true"
-          className="pointer-events-none fixed inset-1 z-[9999] rounded-[8px] border border-white shadow-[0_0_0_9999px_rgba(255,255,255,1)] md:inset-2"
-        />
-        <Navbar />
-        {children}
-        <footer className="py-10 text-center text-white/60 text-sm bg-black">
-          © {new Date().getFullYear()} Cylvor IT. All rights reserved.
-        </footer>
+      <body className={`${inter.className} bg-black text-white antialiased`}>
+        <SmoothScroll>
+          {/* UPDATED FRAME:
+            - inset-1 md:inset-2: Ultra-thin white border (4px mobile, 8px desktop).
+            - rounded-md: Tighter corners to match the thin border.
+          */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none fixed inset-1 md:inset-2 z-[9999] rounded-md border border-zinc-900/20 shadow-[0_0_0_9999px_white]"
+          />
+          
+          <Navbar />
+          {children}
+          
+          <footer className="py-10 text-center text-zinc-600 text-[10px] uppercase tracking-widest bg-black relative z-10">
+            © {new Date().getFullYear()} Cylvor IT. All rights reserved.
+          </footer>
+        </SmoothScroll>
       </body>
     </html>
   );

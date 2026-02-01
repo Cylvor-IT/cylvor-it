@@ -5,9 +5,9 @@ import Image from "next/image";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { cn } from "@/lib/utils";
 
 const navItems = [
-  { name: "Home", href: "#hero" },
   { name: "About", href: "#about" },
   { name: "Services", href: "#services" },
 ];
@@ -16,111 +16,101 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef(null);
 
-  // Animation: Slide down from top on load
   useGSAP(() => {
     gsap.from(navRef.current, {
       y: -100,
       opacity: 0,
       duration: 1.2,
       ease: "power4.out",
-      delay: 0.5, // Wait for other page elements slightly
+      delay: 0.5,
     });
   });
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
+  const handleLinkClick = (href: string) => {
     setIsOpen(false);
     const target = document.querySelector(href);
     target?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <>
-      {/* Container: Centered at top. 
-        Top-6 ensures it sits nicely inside your white border frame (which is at inset-2).
-      */}
-      <nav 
-        ref={navRef}
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-[90%] md:max-w-fit"
-      >
-        <div className="relative flex items-center justify-between gap-2 md:gap-1 p-2 rounded-full border border-white/10 bg-black/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] transition-all duration-300 hover:border-white/20">
-          
-          {/* 1. The Logo */}
-          <a 
-            href="#hero" 
-            className="flex items-center justify-center w-10 h-10 hover:scale-105 transition-transform"
-          >
-            <Image
-              src="/assets/logo.svg"
-              alt="Cylvor IT logo"
-              width={32}
-              height={32}
-              className="h-8 w-8 object-contain"
-              priority
-            />
-          </a>
+    <nav 
+      ref={navRef}
+      // UPDATED: 'top-4' ensures the navbar looks balanced with the thinner 'inset-1' frame
+      className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
+    >
+      <div className="relative flex items-center justify-between gap-2 p-2 pl-4 pr-2 rounded-full border border-white/10 bg-black/70 backdrop-blur-xl shadow-2xl w-full max-w-2xl transition-all duration-300 hover:border-white/20">
+        
+        {/* Logo */}
+        <a 
+          href="#hero" 
+          onClick={(e) => { e.preventDefault(); handleLinkClick('#hero'); }}
+          className="flex items-center justify-center hover:scale-105 transition-transform"
+        >
+          <Image
+            src="/assets/logo.svg"
+            alt="Cylvor IT"
+            width={28}
+            height={28}
+            className="w-7 h-7 object-contain"
+          />
+          <span className="ml-2 font-bold text-sm tracking-wide hidden sm:block">Cylvor IT</span>
+        </a>
 
-          {/* 2. Desktop Links (Hidden on Mobile) */}
-          <div className="hidden md:flex items-center bg-white/5 rounded-full px-2 py-1 mx-2 border border-white/5">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => handleLinkClick(e, item.href)}
-                className="relative px-5 py-2 text-sm text-slate-300 hover:text-white transition-colors duration-300 group overflow-hidden rounded-full"
-              >
-                <span className="relative z-10">{item.name}</span>
-                {/* Subtle hover glow background */}
-                <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 rounded-full transition-opacity duration-300" />
-              </a>
-            ))}
-          </div>
-
-          {/* 3. Contact Button (Distinct) */}
-          <div className="hidden md:block">
-            <a
-              href="#contact"
-              onClick={(e) => handleLinkClick(e, "#contact")}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black text-sm font-bold hover:bg-slate-200 transition-colors"
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-1 bg-white/5 rounded-full px-1 py-1 border border-white/5">
+          {navItems.map((item) => (
+            <button
+              key={item.name}
+              onClick={() => handleLinkClick(item.href)}
+              className="px-5 py-2 text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300"
             >
-              Contact
-              <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
+              {item.name}
+            </button>
+          ))}
+        </div>
 
-          {/* Mobile Menu Toggle */}
-          <button 
-            className="md:hidden p-2 text-white hover:bg-white/10 rounded-full transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
+        {/* Contact Button */}
+        <div className="hidden md:block">
+          <button
+            onClick={() => handleLinkClick('#contact')}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black text-xs font-bold uppercase tracking-wide hover:bg-zinc-200 transition-colors"
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            Contact
+            <ArrowRight className="w-3 h-3" />
           </button>
         </div>
 
-        {/* Mobile Dropdown (Floating below the capsule) */}
-        {isOpen && (
-          <div className="absolute top-full mt-4 left-0 w-full bg-zinc-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-4 flex flex-col gap-2 shadow-2xl overflow-hidden md:hidden animate-in fade-in slide-in-from-top-4 duration-200">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => handleLinkClick(e, item.href)}
-                className="block px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all"
-              >
-                {item.name}
-              </a>
-            ))}
-            <div className="h-px bg-white/10 my-2" />
-            <a
-              href="#contact"
-              onClick={(e) => handleLinkClick(e, "#contact")}
-              className="flex items-center justify-between px-4 py-3 bg-white text-black font-bold rounded-xl active:scale-95 transition-transform"
+        {/* Mobile Toggle */}
+        <button 
+          className="md:hidden p-2 text-white hover:bg-white/10 rounded-full transition-colors"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+
+        {/* Mobile Menu Dropdown */}
+        <div className={cn(
+          "absolute top-full mt-3 left-0 w-full bg-zinc-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-2 flex flex-col shadow-2xl overflow-hidden md:hidden transition-all duration-300 origin-top",
+          isOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-4 pointer-events-none"
+        )}>
+          {navItems.map((item) => (
+            <button
+              key={item.name}
+              onClick={() => handleLinkClick(item.href)}
+              className="w-full text-left px-4 py-3 text-zinc-400 hover:text-white hover:bg-white/5 rounded-xl transition-all text-sm"
             >
-              Contact Us <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
-        )}
-      </nav>
-    </>
+              {item.name}
+            </button>
+          ))}
+          <div className="h-px bg-white/10 my-1 mx-2" />
+          <button
+            onClick={() => handleLinkClick("#contact")}
+            className="flex items-center justify-between w-full text-left px-4 py-3 bg-white text-black font-bold text-sm rounded-xl active:scale-95 transition-transform"
+          >
+            Start Project <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </nav>
   );
 }

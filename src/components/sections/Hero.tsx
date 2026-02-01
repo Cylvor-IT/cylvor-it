@@ -12,38 +12,45 @@ export default function Hero() {
   const btnRef = useRef(null);
 
   useGSAP(() => {
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    tl.from(titleRef.current, { y: 50, opacity: 0, duration: 1, ease: "power3.out" })
-      .from(subRef.current, { y: 30, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.6")
-      .from(btnRef.current, { scale: 0.8, opacity: 0, duration: 0.8, ease: "back.out(1.7)" }, "-=0.6");
+    tl.from(titleRef.current, { y: 100, opacity: 0, duration: 1.2, delay: 0.2 })
+      .from(subRef.current, { y: 40, opacity: 0, duration: 1 }, "-=0.8")
+      .from(btnRef.current, { y: 20, opacity: 0, duration: 0.8 }, "-=0.6");
       
   }, { scope: container });
 
+  const scroll = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section id="hero" ref={container} className="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-24 sm:pt-28 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-black via-black to-black">
+    <section id="hero" ref={container} className="min-h-screen flex flex-col justify-center items-center text-center px-6 relative overflow-hidden bg-black">
       
-      {/* Background Glow Element */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-red-500/20 blur-[100px] rounded-full pointer-events-none" />
+      {/* Background Ambience */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] md:w-[900px] h-[500px] bg-red-600/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
 
-      <h1 ref={titleRef} className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 tracking-tight relative z-10">
-        Transforming Ideas into <br />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-red-500">
-          Digital Reality
-        </span>
-      </h1>
+      <div className="relative z-10 max-w-5xl">
+        <h1 ref={titleRef} className="text-5xl sm:text-6xl md:text-8xl font-bold mb-8 tracking-tighter leading-[0.95]">
+          Transforming Ideas <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-red-600">
+            Into Reality
+          </span>
+        </h1>
 
-      <p ref={subRef} className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mb-10 relative z-10">
-        We are Cylvor IT. We build high-performance websites, web apps, and digital experiences that drive growth for startups and enterprises.
-      </p>
+        <p ref={subRef} className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+          We build high-performance digital experiences that drive growth for modern brands and enterprises.
+        </p>
 
-      <div ref={btnRef} className="flex gap-4 relative z-10">
-        <Button onClick={() => document.getElementById('contact')?.scrollIntoView({behavior: 'smooth'})}>
-          Start a Project
-        </Button>
-        <Button variant="outline" onClick={() => document.getElementById('services')?.scrollIntoView({behavior: 'smooth'})}>
-          Explore Services
-        </Button>
+        <div ref={btnRef} className="flex flex-wrap justify-center gap-4">
+          <Button onClick={() => scroll('contact')}>
+            Start a Project
+          </Button>
+          <Button variant="outline" onClick={() => scroll('services')}>
+            Explore Services
+          </Button>
+        </div>
       </div>
     </section>
   );
