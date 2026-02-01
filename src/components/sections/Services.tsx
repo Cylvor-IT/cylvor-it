@@ -50,7 +50,7 @@ export default function Services() {
     <section id="services" ref={container} className="py-32 px-6 bg-transparent">
       <div className="container mx-auto">
         <div className="mb-20 max-w-2xl">
-          <span className="text-red-600 font-mono text-xs tracking-[0.2em] uppercase mb-4 block">Services</span>
+          <span className="text-lime-400 font-mono text-xs tracking-[0.2em] uppercase mb-4 block">Services</span>
           <h2 className="text-4xl md:text-6xl font-bold mb-6 font-oswald uppercase">Our Expertise</h2>
           <p className="text-zinc-400 text-lg font-sans">Comprehensive IT solutions designed for scale, speed, and security.</p>
         </div>
@@ -59,9 +59,9 @@ export default function Services() {
           {services.map((service, index) => (
             <div 
               key={index} 
-              className="service-card p-8 bg-zinc-900/20 rounded-xl border border-white/5 hover:bg-zinc-900/50 hover:border-red-600/40 transition-all duration-500 group backdrop-blur-sm"
+              className="service-card p-8 bg-zinc-900/20 rounded-xl border border-white/5 hover:bg-zinc-900/50 hover:border-lime-400/40 transition-all duration-500 group backdrop-blur-sm"
             >
-              <div className="mb-6 p-4 bg-white/5 rounded-lg w-fit group-hover:bg-red-600 group-hover:scale-110 transition-all duration-300">
+              <div className="mb-6 p-4 bg-white/5 rounded-lg w-fit group-hover:bg-lime-400 group-hover:scale-110 transition-all duration-300">
                 {service.icon}
               </div>
               <h3 className="text-xl font-bold mb-3 text-white font-oswald uppercase tracking-wide">{service.title}</h3>

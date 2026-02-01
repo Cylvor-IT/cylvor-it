@@ -23,7 +23,7 @@ const FlipLink = ({ href, children, onClick }: { href: string; children: string;
         <span className="block text-zinc-400 group-hover:text-white transition-colors duration-500">
           {children}
         </span>
-        <span className="absolute top-full left-0 block text-red-600 font-bold drop-shadow-[0_0_5px_rgba(220,38,38,0.8)]">
+        <span className="absolute top-full left-0 block text-lime-400 font-bold drop-shadow-[0_0_5px_rgba(163,230,53,0.8)]">
           {children}
         </span>
       </div>
@@ -58,7 +58,7 @@ export default function Navbar() {
     >
       <div className="relative mx-auto max-w-7xl md:rounded-lg overflow-hidden p-[1px] transition-all duration-300">
         
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-[200vw] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,#dc2626_360deg)] opacity-100" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-[200vw] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,#a3e635_360deg)] opacity-100" />
         
         <div className="relative h-full w-full bg-black/90 backdrop-blur-xl md:rounded-lg flex items-center justify-between px-6 py-2">
           
@@ -97,14 +97,14 @@ export default function Navbar() {
           <div className="flex items-center gap-4 z-20">
             <button
               onClick={() => handleLinkClick('#contact')}
-              className="hidden md:flex relative items-center gap-2 px-8 py-3 bg-red-600 text-white text-sm font-bold uppercase tracking-wider transition-all font-oswald clip-path-slant shadow-[0_0_15px_rgba(220,38,38,0.4)] hover:shadow-[0_0_25px_rgba(220,38,38,0.6)] overflow-hidden group"
+              className="hidden md:flex relative items-center gap-2 px-8 py-3 bg-lime-400 text-black text-sm font-bold uppercase tracking-wider transition-all font-oswald clip-path-slant shadow-[0_0_15px_rgba(163,230,53,0.4)] hover:shadow-[0_0_25px_rgba(163,230,53,0.6)] overflow-hidden group"
               style={{ clipPath: "polygon(10% 0, 100% 0, 100% 100%, 0% 100%)" }}
             >
               {/* 1. SLIDING BACKGROUND (Red -> White) */}
               <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
               
               {/* 2. CONTENT (Text color change + Icon Swap) */}
-              <div className="relative z-10 flex items-center gap-2 group-hover:text-red-600 transition-colors duration-300">
+              <div className="relative z-10 flex items-center gap-2 group-hover:text-lime-400 transition-colors duration-300">
                 <span>Let's Talk</span>
                 
                 {/* ICON CONTAINER: Increased size to w-5 h-5 and added flex centering to prevent cropping */}
@@ -131,7 +131,7 @@ export default function Navbar() {
 
         {/* --- MOBILE DROPDOWN --- */}
         <div className={cn(
-          "absolute top-full left-0 right-0 mt-2 mx-4 bg-[#0a0a0a] border border-red-600/20 rounded-lg shadow-2xl overflow-hidden md:hidden flex flex-col transition-all duration-300 origin-top z-50",
+          "absolute top-full left-0 right-0 mt-2 mx-4 bg-[#0a0a0a] border border-lime-400/20 rounded-lg shadow-2xl overflow-hidden md:hidden flex flex-col transition-all duration-300 origin-top z-50",
           isOpen ? "opacity-100 scale-100 translate-y-0 max-h-[400px]" : "opacity-0 scale-95 -translate-y-2 max-h-0 pointer-events-none"
         )}>
            <div className="p-4 flex flex-col gap-2">
@@ -147,7 +147,7 @@ export default function Navbar() {
             <div className="h-px bg-white/10 my-2" />
             <button
               onClick={() => handleLinkClick("#contact")}
-              className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-widest rounded transition-colors font-oswald shadow-[0_0_15px_rgba(220,38,38,0.5)]"
+              className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-lime-400 hover:bg-lime-500 text-black font-bold text-xs uppercase tracking-widest rounded transition-colors font-oswald shadow-[0_0_15px_rgba(163,230,53,0.5)]"
             >
               Start Project <ArrowUpRight className="w-3 h-3" />
             </button>
