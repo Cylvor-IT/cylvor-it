@@ -81,14 +81,13 @@ export default function Contact() {
       className="relative min-h-screen py-24 md:py-32 px-6 flex flex-col items-center justify-center bg-transparent overflow-hidden"
     >
       {/* --- BACKGROUND AMBIENCE --- */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-lime-400/5 blur-[120px] pointer-events-none rounded-full" />
+      {/* Removed the subtle grid pattern for a completely clean background */}
+      {/* Removed the large lime blur tint div */}
 
       <div className="container relative z-10 max-w-6xl">
         
         {/* --- HEADER --- */}
         <div className="text-center mb-16 flex flex-col items-center">
-           {/* UPDATED: Reduced font size to text-4xl md:text-7xl */}
            <h2 className="contact-anim text-4xl md:text-7xl font-black uppercase leading-[0.9] font-oswald text-white mb-6">
              <span className="block mb-2">Let's Build</span>
              <span className="text-transparent bg-clip-text bg-gradient-to-b from-lime-300 to-lime-600">
@@ -97,7 +96,7 @@ export default function Contact() {
            </h2>
 
            <p className="contact-anim text-zinc-400 font-sans text-sm md:text-base max-w-md leading-relaxed">
-             Ready to start your digital transformation? Drop a message
+             Ready to start your digital transformation? Drop us a line.
            </p>
         </div>
 
@@ -197,7 +196,6 @@ export default function Contact() {
                     >
                       {/* Sliding Background */}
                       <div className="absolute inset-0 bg-lime-400 translate-y-[101%] group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
-                      
                       {/* Icon */}
                       <social.icon size={22} className="relative z-10 transition-colors duration-300 group-hover:text-black" />
                     </a>
