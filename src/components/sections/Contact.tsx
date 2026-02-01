@@ -187,6 +187,7 @@ export default function Contact() {
                     { name: "Facebook", icon: Facebook, href: "#" },
                     { name: "Instagram", icon: Instagram, href: "#" },
                     { name: "LinkedIn", icon: Linkedin, href: "#" },
+                    { name: "Email", icon: Mail, href: "mailto:hello@cylvor.it" },
                   ].map((social) => (
                     <a 
                       key={social.name} 
