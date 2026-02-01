@@ -93,10 +93,10 @@ export default function Hero() {
         </div>
 
         <div className="flex flex-col items-center gap-3 animate-bounce opacity-80">
-           {/* UPDATED: text-red-600 */}
-           <span className="text-[10px] uppercase tracking-[0.3em] text-red-600 font-bold font-sans">Scroll</span>
+           {/* UPDATED: text-lime-400 */}
+           <span className="text-[10px] uppercase tracking-[0.3em] text-lime-400 font-bold font-sans">Scroll</span>
            {/* UPDATED: Arrow color to match */}
-           <ArrowDown className="w-4 h-4 text-red-600" />
+           <ArrowDown className="w-4 h-4 text-lime-400" />
         </div>
       </div>
 
