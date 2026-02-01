@@ -4,7 +4,6 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Cpu, Zap, Target, CheckCircle, Clock, Users, ShieldCheck, Activity, Timer } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,7 +30,6 @@ const cubeStyles = `
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    /* Improved Blur: Increased opacity slightly to ground the blur during pinning */
     background: rgba(15, 15, 15, 0.7); 
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -50,22 +48,18 @@ const PerformanceCube = () => {
       <style>{cubeStyles}</style>
       <div className="cube">
         <div className="cube-face rounded-lg" style={{ transform: "rotateX(0deg) translateZ(120px)" }}>
-           <Target className="w-10 h-10 text-lime-400 mb-2" />
            <div className="text-5xl font-black text-white font-oswald flex items-baseline">100%</div>
            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Success Rate</span>
         </div>
         <div className="cube-face rounded-lg" style={{ transform: "rotateX(-90deg) translateZ(120px)" }}>
-           <CheckCircle className="w-10 h-10 text-lime-400 mb-2" />
            <div className="text-5xl font-black text-white font-oswald flex items-baseline">50+</div>
            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Projects Done</span>
         </div>
         <div className="cube-face rounded-lg" style={{ transform: "rotateX(-180deg) translateZ(120px)" }}>
-           <Clock className="w-10 h-10 text-lime-400 mb-2" />
            <div className="text-4xl font-black text-white font-oswald uppercase text-center leading-none">On<br/>Time</div>
            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Delivery</span>
         </div>
         <div className="cube-face rounded-lg" style={{ transform: "rotateX(-270deg) translateZ(120px)" }}>
-           <Users className="w-10 h-10 text-lime-400 mb-2" />
            <div className="text-5xl font-black text-white font-oswald flex items-baseline">100%</div>
            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Happy Clients</span>
         </div>
@@ -79,22 +73,18 @@ const SupportCube = () => {
       <div className="cube-container w-full h-full rounded-lg overflow-visible z-30">
         <div className="cube"> 
           <div className="cube-face rounded-lg" style={{ transform: "rotateX(0deg) translateZ(120px)" }}>
-             <Zap className="w-10 h-10 text-lime-400 mb-2" />
              <div className="text-5xl font-black text-white font-oswald flex items-baseline">24/7</div>
              <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Live Support</span>
           </div>
           <div className="cube-face rounded-lg" style={{ transform: "rotateX(-90deg) translateZ(120px)" }}>
-             <Timer className="w-10 h-10 text-lime-400 mb-2" />
              <div className="text-5xl font-black text-white font-oswald flex items-baseline">&lt;15m</div>
              <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Response Time</span>
           </div>
           <div className="cube-face rounded-lg" style={{ transform: "rotateX(-180deg) translateZ(120px)" }}>
-             <Activity className="w-10 h-10 text-lime-400 mb-2" />
              <div className="text-5xl font-black text-white font-oswald uppercase text-center leading-none">100%</div>
              <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Server Uptime</span>
           </div>
           <div className="cube-face rounded-lg" style={{ transform: "rotateX(-270deg) translateZ(120px)" }}>
-             <ShieldCheck className="w-10 h-10 text-lime-400 mb-2" />
              <div className="text-4xl font-black text-white font-oswald flex items-baseline">PRO</div>
              <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Expert Team</span>
           </div>
@@ -140,20 +130,8 @@ export default function About() {
     }, "start");
 
     tl.fromTo(gridRef.current, 
-      { 
-        y: 50, 
-        opacity: 0, 
-        scale: 0.98,
-        // Force rendering context during animation
-        force3D: true 
-      },
-      { 
-        y: 0,   
-        opacity: 1, 
-        scale: 1,
-        duration: 0.8,
-        ease: "power2.out"
-      }, 
+      { y: 50, opacity: 0, scale: 0.98, force3D: true },
+      { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }, 
       "start+=0.2"
     );
 
@@ -164,26 +142,17 @@ export default function About() {
       ref={container} 
       id="about" 
       className="relative h-screen w-full overflow-hidden bg-transparent flex flex-col items-center"
-      style={{ isolation: 'isolate' }} // Creates a new stacking context
+      style={{ isolation: 'isolate' }}
     >
-      <h2 
-        ref={titleRef}
-        className="z-10 text-[12vw] leading-none font-black font-oswald text-white whitespace-nowrap select-none drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] will-change-transform pointer-events-none"
-      >
+      <h2 ref={titleRef} className="z-10 text-[12vw] leading-none font-black font-oswald text-white whitespace-nowrap select-none drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] will-change-transform pointer-events-none">
         WHO WE ARE
       </h2>
 
-      <div 
-        ref={gridRef}
-        className="relative z-20 container mx-auto px-6 pt-[25vh] h-full flex flex-col justify-start transform-gpu"
-      >
+      <div ref={gridRef} className="relative z-20 container mx-auto px-6 pt-[25vh] h-full flex flex-col justify-start transform-gpu">
         <div className="grid grid-cols-1 md:grid-cols-12 auto-rows-[240px] gap-6 w-full max-w-7xl mx-auto">
 
-          {/* Narrative Card */}
+          {/* Narrative Card - No Icons */}
           <div className="md:col-span-8 h-full p-8 bg-zinc-900/70 backdrop-blur-2xl border border-white/10 rounded-lg relative overflow-hidden group hover:border-lime-400/30 transition-all shadow-2xl flex flex-col justify-center transform-gpu">
-            <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 transition-opacity duration-500">
-               <Cpu className="w-20 h-20 text-lime-400" />
-            </div>
             <h3 className="text-xl md:text-3xl font-bold text-white mb-3 font-oswald uppercase tracking-wide">
               The <span className="text-lime-400">New Wave</span> of Innovation
             </h3>
@@ -203,7 +172,7 @@ export default function About() {
              <SupportCube />
           </div>
 
-          {/* Vision Card */}
+          {/* Vision Card - No Icons */}
           <div className="md:col-span-8 h-full p-8 bg-gradient-to-r from-lime-900/40 to-black/70 backdrop-blur-2xl border border-lime-400/20 rounded-lg flex items-center justify-between shadow-2xl transform-gpu">
             <div>
               <span className="text-lime-300 font-mono text-xs tracking-[0.2em] uppercase mb-2 block">Our Vision</span>
@@ -213,7 +182,7 @@ export default function About() {
             </div>
             <div className="hidden md:block w-px h-16 bg-white/20 mx-8" />
             <p className="hidden md:block text-sm text-zinc-400 max-w-xs font-sans">
-              From MVP to Enterprise scale, we build systems that grow with your ambition. We focus on scalable code and future-proof design.
+              From MVP to Enterprise scale, we build systems that grow with your ambition. We focus on scalable code.
             </p>
           </div>
 
