@@ -96,7 +96,7 @@ export default function Services() {
       xPercent: -50,
       yPercent: -50,
       scale: 1,
-      color: "#ffffff",
+      color: "#a3e635",
       zIndex: 50,
     });
 
@@ -141,7 +141,7 @@ export default function Services() {
         yPercent: 0,
         xPercent: -50,
         left: "50%",
-        color: "#ef4444",
+        color: "#a3e635",
         ease: "power2.inOut",
       },
       "start"
@@ -246,7 +246,7 @@ export default function Services() {
       {/* --- TITLE --- */}
       <h2 
         ref={titleRef}
-        className="z-10 text-[12vw] leading-none font-black font-oswald text-white whitespace-nowrap select-none drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] will-change-transform pointer-events-none"
+        className="z-10 text-[12vw] leading-none font-black font-oswald text-lime-400 whitespace-nowrap select-none drop-shadow-[0_0_15px_rgba(163,230,53,0.12)] will-change-transform pointer-events-none"
       >
         OUR EXPERTISE
       </h2>
@@ -270,7 +270,7 @@ export default function Services() {
                       {service.icon}
                     </div>
                     <div>
-                      <span className="block text-red-500 text-[10px] font-bold tracking-[0.25em] uppercase mb-1">
+                      <span className="block text-lime-400 text-[10px] font-bold tracking-[0.25em] uppercase mb-1">
                         {service.tagline}
                       </span>
                       <div className="text-lg font-bold text-white font-oswald uppercase leading-tight">
@@ -282,18 +282,18 @@ export default function Services() {
                 </summary>
 
                 <div className="px-5 pb-5 pt-0">
-                  <p className="text-zinc-300 text-sm font-sans leading-relaxed border-l-2 border-red-600/30 pl-4 mb-5">
+                  <p className="text-zinc-300 text-sm font-sans leading-relaxed border-l-2 border-lime-400/30 pl-4 mb-5">
                     {service.desc}
                   </p>
                   <div className="bg-black/40 p-4 rounded-xl border border-white/5">
                     <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-3 font-bold flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-600" />
+                      <span className="w-2 h-2 rounded-full bg-lime-400" />
                       What We Build
                     </p>
                     <ul className="space-y-2">
                       {service.projectTypes.map((project) => (
                         <li key={project} className="flex items-start gap-3 text-sm text-zinc-200 font-medium">
-                          <CheckCircle2 className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-4 h-4 text-lime-400 shrink-0 mt-0.5" />
                           <span>{project}</span>
                         </li>
                       ))}
@@ -332,13 +332,13 @@ export default function Services() {
                     className={cn(
                       "text-left w-full px-3 py-4 rounded-xl transition-all border border-transparent",
                       idx === activeIndex
-                        ? "bg-red-600/10 border-red-600/30"
+                        ? "bg-lime-400/10 border-lime-400/30"
                         : "hover:bg-white/5 hover:border-white/10"
                     )}
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <div className="text-[10px] font-bold tracking-[0.25em] uppercase text-red-500">
+                        <div className="text-[10px] font-bold tracking-[0.25em] uppercase text-lime-400">
                           {service.tagline}
                         </div>
                         <div className="mt-1 text-lg font-bold text-white font-oswald uppercase leading-tight">
@@ -369,11 +369,11 @@ export default function Services() {
             >
               <div className="flex items-start justify-between gap-6">
                 <div className="flex items-start gap-5">
-                  <div className="p-4 bg-red-600 rounded-2xl text-white shadow-lg">
+                  <div className="p-4 bg-lime-400 rounded-2xl text-black shadow-lg">
                     {activeService.icon}
                   </div>
                   <div>
-                    <span className="block text-red-500 text-xs font-bold tracking-[0.2em] uppercase mb-2">
+                    <span className="block text-lime-400 text-xs font-bold tracking-[0.2em] uppercase mb-2">
                       {activeService.tagline}
                     </span>
                     <h3 className="text-2xl lg:text-4xl font-bold text-white font-oswald uppercase leading-tight">
@@ -388,19 +388,19 @@ export default function Services() {
 
               <div className="mt-8 grid grid-cols-1 xl:grid-cols-12 gap-7">
                 <div className="xl:col-span-6">
-                  <p className="text-zinc-200 text-lg lg:text-xl font-sans leading-relaxed border-l-2 border-red-600/30 pl-6">
+                  <p className="text-zinc-200 text-lg lg:text-xl font-sans leading-relaxed border-l-2 border-lime-400/30 pl-6">
                     {activeService.desc}
                   </p>
 
                   <div className="mt-6 bg-black/40 p-6 rounded-2xl border border-white/5">
                     <p className="text-xs text-zinc-500 uppercase tracking-widest mb-4 font-bold flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-600" />
+                      <span className="w-2 h-2 rounded-full bg-lime-400" />
                       What We Build
                     </p>
                     <ul className="grid grid-cols-1 gap-y-3">
                       {activeService.projectTypes.map((project) => (
                         <li key={project} className="flex items-start gap-3 text-base text-zinc-100 font-medium">
-                          <CheckCircle2 className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-5 h-5 text-lime-400 shrink-0 mt-0.5" />
                           <span>{project}</span>
                         </li>
                       ))}
@@ -409,7 +409,7 @@ export default function Services() {
                 </div>
 
                 <div className="xl:col-span-6">
-                  <div className="bg-gradient-to-br from-red-900/20 to-black/40 p-6 rounded-2xl border border-red-600/15">
+                  <div className="bg-gradient-to-br from-lime-400/10 to-black/40 p-6 rounded-2xl border border-lime-400/15">
                     <p className="text-xs text-zinc-500 uppercase tracking-widest mb-4 font-bold">
                       Tech Stack
                     </p>
