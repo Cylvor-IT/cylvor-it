@@ -50,8 +50,9 @@ export default function Services() {
       <div className="container mx-auto">
         <div className="mb-20 max-w-2xl">
           <span className="text-red-600 font-mono text-xs tracking-[0.2em] uppercase mb-4 block">Services</span>
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">Our Expertise</h2>
-          <p className="text-zinc-400 text-lg">Comprehensive IT solutions designed for scale, speed, and security.</p>
+          {/* UPDATED: Header Font */}
+          <h2 className="text-4xl md:text-6xl font-bold mb-6 font-oswald uppercase">Our Expertise</h2>
+          <p className="text-zinc-400 text-lg font-sans">Comprehensive IT solutions designed for scale, speed, and security.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -63,8 +64,9 @@ export default function Services() {
               <div className="mb-6 p-4 bg-white/5 rounded-lg w-fit group-hover:bg-red-600 group-hover:scale-110 transition-all duration-300">
                 {service.icon}
               </div>
-              <h3 className="text-xl font-bold mb-3 text-white">{service.title}</h3>
-              <p className="text-zinc-500 text-sm leading-relaxed group-hover:text-zinc-300 transition-colors">{service.desc}</p>
+              {/* UPDATED: Card Title Font */}
+              <h3 className="text-xl font-bold mb-3 text-white font-oswald uppercase tracking-wide">{service.title}</h3>
+              <p className="text-zinc-500 text-sm leading-relaxed group-hover:text-zinc-300 transition-colors font-sans">{service.desc}</p>
             </div>
           ))}
         </div>
