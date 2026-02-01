@@ -50,22 +50,22 @@ const PerformanceCube = () => {
       <style>{cubeStyles}</style>
       <div className="cube">
         <div className="cube-face rounded-lg" style={{ transform: "rotateX(0deg) translateZ(120px)" }}>
-           <Target className="w-10 h-10 text-red-600 mb-2" />
+           <Target className="w-10 h-10 text-lime-400 mb-2" />
            <div className="text-5xl font-black text-white font-oswald flex items-baseline">100%</div>
            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Success Rate</span>
         </div>
         <div className="cube-face rounded-lg" style={{ transform: "rotateX(-90deg) translateZ(120px)" }}>
-           <CheckCircle className="w-10 h-10 text-red-600 mb-2" />
+           <CheckCircle className="w-10 h-10 text-lime-400 mb-2" />
            <div className="text-5xl font-black text-white font-oswald flex items-baseline">50+</div>
            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Projects Done</span>
         </div>
         <div className="cube-face rounded-lg" style={{ transform: "rotateX(-180deg) translateZ(120px)" }}>
-           <Clock className="w-10 h-10 text-red-600 mb-2" />
+           <Clock className="w-10 h-10 text-lime-400 mb-2" />
            <div className="text-4xl font-black text-white font-oswald uppercase text-center leading-none">On<br/>Time</div>
            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Delivery</span>
         </div>
         <div className="cube-face rounded-lg" style={{ transform: "rotateX(-270deg) translateZ(120px)" }}>
-           <Users className="w-10 h-10 text-red-600 mb-2" />
+           <Users className="w-10 h-10 text-lime-400 mb-2" />
            <div className="text-5xl font-black text-white font-oswald flex items-baseline">100%</div>
            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Happy Clients</span>
         </div>
@@ -79,22 +79,22 @@ const SupportCube = () => {
       <div className="cube-container w-full h-full rounded-lg overflow-visible z-30">
         <div className="cube"> 
           <div className="cube-face rounded-lg" style={{ transform: "rotateX(0deg) translateZ(120px)" }}>
-             <Zap className="w-10 h-10 text-red-600 mb-2" />
+             <Zap className="w-10 h-10 text-lime-400 mb-2" />
              <div className="text-5xl font-black text-white font-oswald flex items-baseline">24/7</div>
              <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Live Support</span>
           </div>
           <div className="cube-face rounded-lg" style={{ transform: "rotateX(-90deg) translateZ(120px)" }}>
-             <Timer className="w-10 h-10 text-red-600 mb-2" />
+             <Timer className="w-10 h-10 text-lime-400 mb-2" />
              <div className="text-5xl font-black text-white font-oswald flex items-baseline">&lt;15m</div>
              <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Response Time</span>
           </div>
           <div className="cube-face rounded-lg" style={{ transform: "rotateX(-180deg) translateZ(120px)" }}>
-             <Activity className="w-10 h-10 text-red-600 mb-2" />
+             <Activity className="w-10 h-10 text-lime-400 mb-2" />
              <div className="text-5xl font-black text-white font-oswald uppercase text-center leading-none">100%</div>
              <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Server Uptime</span>
           </div>
           <div className="cube-face rounded-lg" style={{ transform: "rotateX(-270deg) translateZ(120px)" }}>
-             <ShieldCheck className="w-10 h-10 text-red-600 mb-2" />
+             <ShieldCheck className="w-10 h-10 text-lime-400 mb-2" />
              <div className="text-4xl font-black text-white font-oswald flex items-baseline">PRO</div>
              <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mt-2">Expert Team</span>
           </div>
@@ -135,7 +135,7 @@ export default function About() {
       yPercent: 0,       
       xPercent: -50,     
       left: "50%",       
-      color: "#ef4444",  
+      color: "#a3e635",  
       ease: "power2.inOut",
     }, "start");
 
@@ -180,12 +180,12 @@ export default function About() {
         <div className="grid grid-cols-1 md:grid-cols-12 auto-rows-[240px] gap-6 w-full max-w-7xl mx-auto">
 
           {/* Narrative Card */}
-          <div className="md:col-span-8 h-full p-8 bg-zinc-900/70 backdrop-blur-2xl border border-white/10 rounded-lg relative overflow-hidden group hover:border-red-600/30 transition-all shadow-2xl flex flex-col justify-center transform-gpu">
+          <div className="md:col-span-8 h-full p-8 bg-zinc-900/70 backdrop-blur-2xl border border-white/10 rounded-lg relative overflow-hidden group hover:border-lime-400/30 transition-all shadow-2xl flex flex-col justify-center transform-gpu">
             <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 transition-opacity duration-500">
-               <Cpu className="w-20 h-20 text-red-600" />
+               <Cpu className="w-20 h-20 text-lime-400" />
             </div>
             <h3 className="text-xl md:text-3xl font-bold text-white mb-3 font-oswald uppercase tracking-wide">
-              The <span className="text-red-600">New Wave</span> of Innovation
+              The <span className="text-lime-400">New Wave</span> of Innovation
             </h3>
             <p className="text-zinc-300 text-sm md:text-lg leading-relaxed font-sans mb-2 line-clamp-3">
               We are not just another IT firm. We are a dynamic startup born from the idea that technology should be intuitive and beautiful. We deliver pure, high-performance digital solutions.
@@ -204,9 +204,9 @@ export default function About() {
           </div>
 
           {/* Vision Card */}
-          <div className="md:col-span-8 h-full p-8 bg-gradient-to-r from-red-900/40 to-black/70 backdrop-blur-2xl border border-red-600/20 rounded-lg flex items-center justify-between shadow-2xl transform-gpu">
+          <div className="md:col-span-8 h-full p-8 bg-gradient-to-r from-lime-900/40 to-black/70 backdrop-blur-2xl border border-lime-400/20 rounded-lg flex items-center justify-between shadow-2xl transform-gpu">
             <div>
-              <span className="text-red-500 font-mono text-xs tracking-[0.2em] uppercase mb-2 block">Our Vision</span>
+              <span className="text-lime-300 font-mono text-xs tracking-[0.2em] uppercase mb-2 block">Our Vision</span>
               <h3 className="text-xl md:text-3xl font-bold text-white font-oswald uppercase leading-tight">
                 Architecting the <br/> Digital Future
               </h3>
