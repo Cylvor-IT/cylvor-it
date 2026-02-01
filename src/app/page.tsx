@@ -5,13 +5,12 @@ import Contact from "@/components/sections/Contact";
 
 export default function Home() {
   return (
-    <main className="w-full bg-black relative">
-      {/* Hero Wrapper: High Z-Index to stay on top during pinning */}
+    // UPDATED: bg-transparent so the layout's global 3D background shows through
+    <main className="w-full bg-transparent relative">
       <div className="relative z-10">
         <Hero />
       </div>
       
-      {/* Content Wrapper: Lower Z-Index so it scrolls correctly below/after */}
       <div className="relative z-0">
         <About />
         <Services />
