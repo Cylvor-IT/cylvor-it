@@ -3,7 +3,7 @@ import { Inter, Oswald } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
-import Scene3D from "@/components/ui/Scene3D"; // Import the 3D Scene
+import Scene3D_V2 from "@/components/ui/Scene3D_V2";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -36,7 +36,7 @@ export default function RootLayout({
             - z-0: Behind content
         */}
         <div className="fixed inset-0 z-0 pointer-events-none">
-          <Scene3D />
+          <Scene3D_V2 />
         </div>
 
         <SmoothScroll>
