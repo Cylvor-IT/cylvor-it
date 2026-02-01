@@ -3,14 +3,13 @@ import { Inter, Oswald } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import Scene3D from "@/components/ui/Scene3D"; // Import the 3D Scene
 
-// 1. Configure Inter (Body)
 const inter = Inter({ 
   subsets: ["latin"],
   variable: "--font-inter",
 });
 
-// 2. Configure Oswald (Headers)
 const oswald = Oswald({ 
   subsets: ["latin"],
   variable: "--font-oswald",
@@ -32,6 +31,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${oswald.variable} font-sans bg-black text-white antialiased`}>
+        {/* GLOBAL 3D BACKGROUND 
+            - Fixed: Stays in place while scrolling
+            - z-0: Behind content
+        */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <Scene3D />
+        </div>
+
         <SmoothScroll>
           <div
             aria-hidden="true"
@@ -39,7 +46,11 @@ export default function RootLayout({
           />
           
           <Navbar />
-          {children}
+          
+          {/* Ensure children have a relative z-index to sit ON TOP of the background */}
+          <div className="relative z-10">
+            {children}
+          </div>
           
           <footer className="py-10 text-center text-zinc-600 text-[10px] uppercase tracking-widest bg-black relative z-10 font-sans">
             © {new Date().getFullYear()} Cylvor IT. All rights reserved.
