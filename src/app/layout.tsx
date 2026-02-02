@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Scene3D_V2 from "@/components/ui/Scene3D_V2";
+import { Preload } from "@react-three/drei";
+import Preloader from "@/components/ui/Preloader";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -35,6 +37,7 @@ export default function RootLayout({
             - Fixed: Stays in place while scrolling
             - z-0: Behind content
         */}
+        <Preloader />
         <div className="fixed inset-0 z-0 pointer-events-none">
           <Scene3D_V2 />
         </div>
@@ -52,9 +55,6 @@ export default function RootLayout({
             {children}
           </div>
           
-          <footer className="py-10 text-center text-zinc-600 text-[10px] uppercase tracking-widest bg-black relative z-10 font-sans">
-            © {new Date().getFullYear()} Cylvor IT. All rights reserved.
-          </footer>
         </SmoothScroll>
       </body>
     </html>
