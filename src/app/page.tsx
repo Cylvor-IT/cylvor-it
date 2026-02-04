@@ -2,6 +2,8 @@ import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Services from "@/components/sections/Services";
 import Contact from "@/components/sections/Contact";
+import AboutDetails from "@/components/sections/AboutDetails";
+import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (
@@ -13,8 +15,10 @@ export default function Home() {
       
       <div className="relative z-0">
         <About />
+        <AboutDetails />
         <Services />
         <Contact />
+        <Footer />
       </div>
     </main>
   );
