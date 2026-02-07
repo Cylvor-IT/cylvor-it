@@ -6,13 +6,14 @@ import SmoothScroll from "@/components/layout/SmoothScroll";
 import Scene3D_V2 from "@/components/ui/Scene3D_V2";
 import { Preload } from "@react-three/drei";
 import Preloader from "@/components/ui/Preloader";
+import CustomCursor from "@/components/ui/CustomCursor";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
 
-const oswald = Oswald({ 
+const oswald = Oswald({
   subsets: ["latin"],
   variable: "--font-oswald",
 });
@@ -38,6 +39,7 @@ export default function RootLayout({
             - z-0: Behind content
         */}
         <Preloader />
+        <CustomCursor />
         <div className="fixed inset-0 z-0 pointer-events-none">
           <Scene3D_V2 />
         </div>
@@ -47,14 +49,14 @@ export default function RootLayout({
             aria-hidden="true"
             className="pointer-events-none fixed inset-1 md:inset-2 z-[9999] rounded-md border border-zinc-900/20 shadow-[0_0_0_9999px_white]"
           />
-          
+
           <Navbar />
-          
+
           {/* Ensure children have a relative z-index to sit ON TOP of the background */}
           <div className="relative z-10">
             {children}
           </div>
-          
+
         </SmoothScroll>
       </body>
     </html>

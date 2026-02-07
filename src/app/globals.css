@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-html.lenis, html.lenis body {
+html.lenis,
+html.lenis body {
   height: auto;
 }
 
@@ -22,13 +23,22 @@ html.lenis, html.lenis body {
 
 /* Custom Scrollbar Hide */
 html {
-  -ms-overflow-style: none; 
-  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+
 html::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }
 
 body {
   @apply bg-black text-white antialiased;
+  cursor: none !important;
+}
+
+a,
+button,
+input,
+[role="button"] {
+  cursor: none !important;
 }

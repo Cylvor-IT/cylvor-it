@@ -106,17 +106,13 @@ function NeuralWave({ count = 8000 }) { // 8000 particles for high density
   return (
     <points ref={meshRef}>
       <bufferGeometry>
-        <bufferAttribute 
-          attach="attributes-position" 
-          count={particles.positions.length / 3} 
-          array={particles.positions} 
-          itemSize={3} 
+        <bufferAttribute
+          attach="attributes-position"
+          args={[particles.positions, 3]}
         />
-        <bufferAttribute 
-          attach="attributes-color" 
-          count={particles.colors.length / 3} 
-          array={particles.colors} 
-          itemSize={3} 
+        <bufferAttribute
+          attach="attributes-color"
+          args={[particles.colors, 3]}
         />
       </bufferGeometry>
       <pointsMaterial 
