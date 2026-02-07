@@ -6,202 +6,152 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
 
+
 gsap.registerPlugin(ScrollTrigger);
 
-const timelineData = [
-  {
-    id: "1",
-    title: "Strategic",
-    highlight: "Core",
-    simpleHeader: "FOCUS: PRECISION",
-    simpleText: "We map the entire user journey before writing a single line of code to eliminate redundancy.",
-    // New Line Added
-    additionalText: "Precision metrics guide every architectural decision.", 
-    align: "left",
-  },
-  {
-    id: "2",
-    title: "Rapid",
-    highlight: "Scale",
-    simpleHeader: "TECH: NEXT-GEN",
-    simpleText: "Leveraging serverless computing and edge rendering for instant global availability.",
-    // New Line Added
-    additionalText: "Zero-downtime deployments guarantee your business never stops.",
-    align: "right",
-  },
-  {
-    id: "3",
-    title: "Future",
-    highlight: "Proofing",
-    simpleHeader: "GOAL: LONGEVITY",
-    simpleText: "Clean, well-documented codebases that your internal team can maintain and expand easily.",
-    // New Line Added
-    additionalText: "Scalable infrastructure that evolves alongside your user base.",
-    align: "left",
-  },
-  {
-    id: "4",
-    title: "Continuous",
-    highlight: "Optimization",
-    simpleHeader: "ACTION: REFINE",
-    simpleText: "Real-time performance tracking and iterative A/B testing to maximize conversion rates.",
-    // New Line Added
-    additionalText: "We turn user behavior data into actionable growth strategies.",
-    align: "right",
-  },
+const steps = [
+    {
+        id: "01",
+        title: "PLAN",
+        text: "We study your business. We make a clear roadmap.",
+        bg: "bg-zinc-900"
+    },
+    {
+        id: "02",
+        title: "DESIGN",
+        text: "We create visuals that look great and work everywhere.",
+        bg: "bg-zinc-900"
+    },
+    {
+        id: "03",
+        title: "BUILD",
+        text: "We write clean code so your site is fast and safe.",
+        bg: "bg-zinc-900"
+    },
+    {
+        id: "04",
+        title: "GROW",
+        text: "We help you launch and reach more customers.",
+        bg: "bg-zinc-900"
+    },
 ];
 
 export default function AboutDetails() {
-  const container = useRef(null);
-  const lineRef = useRef(null);
+    const sectionRef = useRef(null);
+    const trackRef = useRef<HTMLDivElement>(null);
+    const titleContainerRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
-    // 1. Animate the central Green Line
-    gsap.fromTo(lineRef.current, 
-      { height: "0%" },
-      { 
-        height: "100%", 
-        ease: "none",
-        scrollTrigger: {
-          trigger: container.current,
-          start: "top center",
-          end: "bottom center",
-          scrub: 1, 
+    useGSAP(() => {
+        const track = trackRef.current;
+        if (!track) return;
+
+        // Get the total scroll width (width of track - viewport width)
+        const getScrollAmount = () => {
+            let trackWidth = track.scrollWidth;
+            return -(trackWidth - window.innerWidth);
+        };
+
+        // Create a master timeline
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top top",
+                end: () => `+=${Math.abs(getScrollAmount()) + 2500}`, // Deep scroll for distinct steps
+                pin: true,
+                scrub: 1, // Smooth scrub
+                invalidateOnRefresh: true,
+            }
+        });
+
+        // 1. Text Reveal Animation (Simultaneous)
+        // We want: HOW, WE, WORK to reveal together with a slight stagger for elegance
+        const chars = titleContainerRef.current?.querySelectorAll(".reveal-text");
+
+        if (chars && chars.length > 0) {
+            tl.to(chars, {
+                y: "0%",
+                duration: 1,
+                stagger: 0.1, // Slight stagger for "wave" effect, effectively simultaneous perception
+                ease: "power3.out"
+            });
+            tl.to({}, { duration: 0.5 }); // Gap before horizontal scroll
         }
-      }
-    );
 
-    // 2. Animate Cards (Slide Up)
-    const cards = gsap.utils.toArray(".timeline-card");
-    cards.forEach((card: any) => {
-      gsap.fromTo(card,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 85%", 
-            toggleActions: "play none none reverse",
-          }
-        }
-      );
-    });
+        // 2. Horizontal Scroll
+        tl.to(track, {
+            x: getScrollAmount,
+            ease: "none",
+            duration: 10, // Much longer relative to the text reveals, so dragging feels like a proper horizontal scroll
+        });
 
-    // 3. Animate Dots
-    const dots = gsap.utils.toArray(".timeline-dot");
-    dots.forEach((dot: any) => {
-      gsap.fromTo(dot,
-        { scale: 0, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.3, 
-          ease: "back.out(2)", 
-          scrollTrigger: {
-            trigger: dot,
-            start: "top 60%", 
-            toggleActions: "play none none reverse",
-          }
-        }
-      );
-    });
+    }, { scope: sectionRef });
 
-  }, { scope: container });
+    return (
+        <section
+            ref={sectionRef}
+            id="about-details"
+            className="relative w-full h-screen overflow-hidden bg-transparent flex flex-col justify-center pt-20"
+        >
+            {/* Background Grid */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none" />
 
-  return (
-    <section 
-      ref={container} 
-      id="about-details"
-      className="relative z-40 w-full py-24 px-6 flex flex-col items-center justify-center bg-transparent pointer-events-auto overflow-hidden"
-    >
-      {/* Background Ambience */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
-
-      <div className="relative w-full max-w-6xl mx-auto">
-        
-        {/* --- CENTRAL TIMELINE TRACK --- */}
-        <div className="absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 hidden md:block bg-white/10">
-           <div ref={lineRef} className="absolute top-0 left-0 w-full bg-lime-400 shadow-[0_0_20px_#a3e635]" />
-        </div>
-
-        {/* --- CARDS LOOP --- */}
-        <div className="flex flex-col gap-16">
-          {timelineData.map((item) => (
-            <div 
-              key={item.id}
-              className={cn(
-                "timeline-card relative flex w-full md:w-1/2",
-                item.align === "right" ? "md:ml-auto md:pl-20" : "md:mr-auto md:pr-20 md:justify-end"
-              )}
+            {/* Horizontal Track - Uses pr-[30vw] for correct last-card centering */}
+            <div
+                ref={trackRef}
+                className="flex gap-4 md:gap-10 px-6 md:px-10 w-fit items-center h-full pr-[20vw] md:pr-[30vw]"
             >
-              
-              {/* --- CENTER INDICATOR DOT --- */}
-              <div className={cn(
-                "timeline-dot hidden md:block absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black border-4 border-lime-400 z-20 shadow-[0_0_15px_#a3e635] scale-0 opacity-0",
-                item.align === "left" ? "-right-3" : "-left-3"
-              )} />
+                {/* Intro Card */}
+                <div className="w-[80vw] md:w-[40vw] h-[60vh] shrink-0 flex flex-col justify-end p-8 border-l border-white/20">
 
-              {/* THE CARD ITSELF */}
-              <div className={cn(
-                "w-full p-8 md:p-10 bg-zinc-950/90 border border-white/10 relative shadow-2xl group hover:bg-zinc-900 transition-colors duration-500",
-                item.align === "left" 
-                  ? "border-r-4 border-r-lime-400 rounded-l-2xl" 
-                  : "border-l-4 border-l-lime-400 rounded-r-2xl"
-              )}>
-                
-                {/* Large Background Number */}
-                <span className={cn(
-                  "absolute text-8xl font-black text-white/5 font-oswald select-none pointer-events-none transition-colors group-hover:text-lime-400/5",
-                  item.align === "left" ? "top-2 left-4" : "top-2 right-4"
-                )}>
-                  {item.id}
-                </span>
+                    {/* Mask Reveal Container */}
+                    <div ref={titleContainerRef} className="flex flex-col gap-0">
+                        {/* Line 1 */}
+                        <div className="overflow-hidden">
+                            <h2 className="reveal-text text-6xl md:text-9xl font-black text-white font-oswald uppercase leading-[0.9] translate-y-full">
+                                HOW
+                            </h2>
+                        </div>
+                        {/* Line 2 */}
+                        <div className="overflow-hidden">
+                            <h2 className="reveal-text text-6xl md:text-9xl font-black text-white font-oswald uppercase leading-[0.9] translate-y-full">
+                                WE
+                            </h2>
+                        </div>
+                        {/* Line 3 - Green */}
+                        <div className="overflow-hidden">
+                            <h2 className="reveal-text text-6xl md:text-9xl font-black text-lime-400 font-oswald uppercase leading-[0.9] translate-y-full">
+                                WORK
+                            </h2>
+                        </div>
 
-                {/* Content Wrapper */}
-                <div className={cn(
-                  "relative z-10 flex flex-col",
-                  item.align === "left" ? "text-right items-end" : "text-left items-start"
-                )}>
-                  
-                  {/* Main Title */}
-                  <h4 className="text-3xl md:text-4xl font-black text-white font-oswald uppercase mb-6 leading-none">
-                    {item.title} <span className="text-lime-400">{item.highlight}</span>
-                  </h4>
 
-                  {/* Content Block */}
-                  <div className={cn(
-                    "w-full max-w-sm",
-                     item.align === "left" ? "flex flex-col items-end" : "flex flex-col items-start"
-                  )}>
-                    <span className="text-lime-400 font-mono text-[10px] tracking-[0.2em] uppercase font-bold mb-3">
-                       {item.simpleHeader}
-                    </span>
-                    
-                    {/* Line 1 */}
-                    <p className="text-zinc-400 text-sm md:text-base leading-relaxed font-sans mb-3">
-                       {item.simpleText}
-                    </p>
-                    
-                    {/* Line 2 (New) */}
-                    <p className="text-zinc-500 text-sm leading-relaxed font-sans border-t border-white/5 pt-3">
-                       {item.additionalText}
-                    </p>
-                  </div>
+                    </div>
 
                 </div>
 
-                {/* Mobile Connector Dot */}
-                <div className="md:hidden absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-black border-2 border-lime-400 rounded-full" />
-              
-              </div>
-            </div>
-          ))}
-        </div>
+                {/* The Steps */}
+                {steps.map((step, index) => (
+                    <div
+                        key={step.id}
+                        className="relative w-[85vw] md:w-[35vw] h-[60vh] md:h-[70vh] shrink-0 bg-zinc-950/80 border border-white/10 p-8 md:p-12 flex flex-col justify-between group hover:border-lime-400/50 transition-colors duration-500 backdrop-blur-md"
+                    >
+                        {/* Step Number */}
+                        <div className="text-8xl md:text-[12rem] font-black text-white/5 font-oswald leading-none absolute top-0 right-0 p-4 select-none group-hover:text-lime-400/10 transition-colors duration-500">
+                            {step.id}
+                        </div>
 
-      </div>
-    </section>
-  );
+                        <div className="relative z-10 mt-auto">
+                            <h3 className="text-4xl md:text-5xl font-bold text-white font-oswald mb-6 uppercase">
+                                {step.title}
+                            </h3>
+                            <div className="h-1 w-20 bg-lime-400 mb-6" />
+                            <p className="text-lg md:text-xl text-zinc-400 font-sans leading-relaxed max-w-sm">
+                                {step.text}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
 }
