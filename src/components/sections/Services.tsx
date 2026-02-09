@@ -53,35 +53,40 @@ export default function Services() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   useGSAP(() => {
-    // Initial Title State - centered in viewport
-    gsap.set(titleRef.current, {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      xPercent: -50,
-      yPercent: -50,
-      scale: 1,
-    });
+    // Check if mobile
+    const mm = gsap.matchMedia();
 
-    // Set initial state for third and fourth cards (hidden, off to the right)
-    gsap.set(".service-card:nth-child(3), .service-card:nth-child(4)", {
-      x: "100%",
-      opacity: 0,
-      visibility: "hidden",
-    });
+    mm.add("(min-width: 768px)", () => {
+      // Desktop animations
+      // Initial Title State - centered in viewport
+      gsap.set(titleRef.current, {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        xPercent: -50,
+        yPercent: -50,
+        scale: 1,
+      });
 
-    // Set up z-index and pointer events control
-    const cards1and2 = gsap.utils.toArray<HTMLElement>(".service-card:nth-child(1), .service-card:nth-child(2)");
-    cards1and2.forEach(card => {
-      card.style.zIndex = '5';
-      card.style.pointerEvents = 'auto';
-    });
+      // Set initial state for third and fourth cards (hidden, off to the right)
+      gsap.set(".service-card:nth-child(3), .service-card:nth-child(4)", {
+        x: "100%",
+        opacity: 0,
+        visibility: "hidden",
+      });
 
-    const cards3and4 = gsap.utils.toArray<HTMLElement>(".service-card:nth-child(3), .service-card:nth-child(4)");
-    cards3and4.forEach(card => {
-      card.style.zIndex = '1';
-      card.style.pointerEvents = 'none';
-    });
+      // Set up z-index and pointer events control
+      const cards1and2 = gsap.utils.toArray<HTMLElement>(".service-card:nth-child(1), .service-card:nth-child(2)");
+      cards1and2.forEach(card => {
+        card.style.zIndex = '5';
+        card.style.pointerEvents = 'auto';
+      });
+
+      const cards3and4 = gsap.utils.toArray<HTMLElement>(".service-card:nth-child(3), .service-card:nth-child(4)");
+      cards3and4.forEach(card => {
+        card.style.zIndex = '1';
+        card.style.pointerEvents = 'none';
+      });
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -160,13 +165,60 @@ export default function Services() {
       ease: "power2.out",
     }, "start+=2.0");
 
+      return () => {
+        // Cleanup desktop animations
+      };
+    });
+
+    mm.add("(max-width: 767px)", () => {
+      // Mobile: Simple fade-in animation for title
+      gsap.from(titleRef.current, {
+        scrollTrigger: {
+          trigger: container.current,
+          start: "top 80%",
+          end: "top 50%",
+          toggleActions: "play none none reverse",
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        ease: "power2.out",
+      });
+
+      // Mobile: Stagger cards on scroll
+      gsap.from(".service-card", {
+        scrollTrigger: {
+          trigger: container.current,
+          start: "top 70%",
+          end: "top 30%",
+          toggleActions: "play none none reverse",
+        },
+        opacity: 0,
+        y: 50,
+        stagger: 0.15,
+        duration: 0.6,
+        ease: "power2.out",
+      });
+
+      // Enable all cards on mobile
+      const allCards = gsap.utils.toArray<HTMLElement>(".service-card");
+      allCards.forEach(card => {
+        card.style.pointerEvents = 'auto';
+        card.style.zIndex = 'auto';
+      });
+
+      return () => {
+        // Cleanup mobile animations
+      };
+    });
+
   }, { scope: container });
 
   return (
     <section
       ref={container}
       id="services"
-      className="relative min-h-screen w-full overflow-hidden pb-32"
+      className="relative min-h-screen w-full overflow-hidden pb-16 md:pb-32"
     >
       {/* Animated background grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)]" />
@@ -175,14 +227,14 @@ export default function Services() {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-lime-500/30 rounded-full blur-[120px] animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[120px] animate-pulse delay-1000" />
 
-      {/* Title - starts centered, moves to top */}
-      <h2 ref={titleRef} className="z-10 text-[12vw] leading-none font-black font-oswald text-white whitespace-nowrap select-none drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] will-change-transform pointer-events-none">
+      {/* Title - starts centered on desktop, static on mobile */}
+      <h2 ref={titleRef} className="z-10 text-5xl md:text-[12vw] leading-none font-black font-oswald text-white text-center md:whitespace-nowrap select-none drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] will-change-transform pointer-events-none md:absolute relative pt-20 md:pt-0">
         OUR EXPERTISE
       </h2>
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10 pt-[35vh]">
+      <div className="container mx-auto px-4 md:px-6 relative z-10 pt-8 md:pt-[35vh]">
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-7xl mx-auto relative md:min-h-[600px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 max-w-7xl mx-auto relative md:min-h-[600px]">
           {services.map((service, index) => (
             <article
               key={service.id}
@@ -198,15 +250,15 @@ export default function Services() {
               }}
             >
               {/* Card container with 3D transform */}
-              <div className="relative h-full transition-all duration-500 ease-out transform-gpu group-hover:scale-[1.02] group-hover:-translate-y-2 overflow-visible" style={{ transformStyle: "preserve-3d" }}>
+              <div className="relative h-full transition-all duration-500 ease-out transform-gpu md:group-hover:scale-[1.02] md:group-hover:-translate-y-2 overflow-visible" style={{ transformStyle: "preserve-3d" }}>
                 {/* Animated gradient border - positioned outside the card */}
-                <div className="absolute -inset-[3px] rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ zIndex: -1 }}>
+                <div className="absolute -inset-[3px] rounded-3xl opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ zIndex: -1 }}>
                   <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${service.color} blur-xl opacity-75`} />
                   <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${service.color} animate-spin-slow`} />
                 </div>
 
                 {/* Main card */}
-                <div className="relative h-full bg-zinc-900/95 backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/5 transition-all duration-500 group-hover:border-lime-400/50">
+                <div className="relative h-full bg-zinc-900/95 backdrop-blur-xl rounded-3xl p-6 md:p-10 border border-white/5 transition-all duration-500 md:group-hover:border-lime-400/50">
                   
                   {/* Background gradient on hover */}
                   <div className={`absolute inset-0 ${service.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-3xl`} />
@@ -214,42 +266,42 @@ export default function Services() {
                   {/* Content */}
                   <div className="relative z-10">
                     {/* Header */}
-                    <div className="flex items-start justify-between mb-8">
+                    <div className="flex items-start justify-between mb-6 md:mb-8">
                       <div className="relative">
-                        <span className={`text-7xl md:text-8xl font-black font-oswald bg-gradient-to-br ${service.color} bg-clip-text text-transparent opacity-20 group-hover:opacity-100 transition-opacity duration-500`}>
+                        <span className={`text-5xl md:text-7xl lg:text-8xl font-black font-oswald bg-gradient-to-br ${service.color} bg-clip-text text-transparent opacity-30 md:opacity-20 md:group-hover:opacity-100 transition-opacity duration-500`}>
                           {service.id}
                         </span>
-                        <div className={`absolute -inset-2 bg-gradient-to-r ${service.color} blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500`} />
+                        <div className={`absolute -inset-2 bg-gradient-to-r ${service.color} blur-xl opacity-0 md:group-hover:opacity-50 transition-opacity duration-500`} />
                       </div>
-                      <div className="p-3 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 group-hover:bg-white/10 group-hover:border-white/20 transition-all duration-300 group-hover:rotate-45 transform">
-                        <ArrowUpRight className="w-5 h-5 text-white" />
+                      <div className="p-2 md:p-3 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 md:group-hover:bg-white/10 md:group-hover:border-white/20 transition-all duration-300 md:group-hover:rotate-45 transform">
+                        <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5 text-white" />
                       </div>
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-black font-oswald uppercase text-white mb-6 leading-tight group-hover:translate-x-2 transition-transform duration-300">
+                    <h3 className="text-2xl md:text-3xl lg:text-5xl font-black font-oswald uppercase text-white mb-4 md:mb-6 leading-tight md:group-hover:translate-x-2 transition-transform duration-300">
                       {service.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-zinc-400 text-base md:text-lg leading-relaxed mb-6 group-hover:text-zinc-300 transition-colors duration-300">
+                    <p className="text-zinc-400 text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6 md:group-hover:text-zinc-300 transition-colors duration-300">
                       {service.desc}
                     </p>
 
                     {/* Features */}
-                    <div className="mb-6 space-y-2">
+                    <div className="mb-4 md:mb-6 space-y-1.5 md:space-y-2">
                       {service.features.map((feature, index) => (
                         <div 
                           key={feature} 
-                          className="flex items-center gap-2 text-zinc-500 group-hover:text-lime-400 transition-all duration-300"
+                          className="flex items-center gap-2 text-zinc-500 md:group-hover:text-lime-400 transition-all duration-300"
                           style={{
                             transitionDelay: hoveredCard === service.id ? `${index * 75}ms` : '0ms'
                           }}
                         >
-                          <div className="p-1 rounded-full bg-lime-500/10 border border-lime-500/20">
-                            <Check className="w-3 h-3 text-lime-400" />
+                          <div className="p-0.5 md:p-1 rounded-full bg-lime-500/10 border border-lime-500/20">
+                            <Check className="w-2.5 h-2.5 md:w-3 md:h-3 text-lime-400" />
                           </div>
-                          <span className="text-sm font-medium">{feature}</span>
+                          <span className="text-xs md:text-sm font-medium">{feature}</span>
                         </div>
                       ))}
                     </div>
@@ -259,7 +311,7 @@ export default function Services() {
                       {service.tags.map((tag, tagIndex) => (
                         <span 
                           key={tag} 
-                          className={`px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider border transition-all duration-300 ${
+                          className={`px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[10px] md:text-xs font-mono uppercase tracking-wider border transition-all duration-300 ${
                             hoveredCard === service.id
                               ? `bg-white/10 border-white/30 text-white`
                               : 'bg-white/5 border-white/10 text-zinc-500'
