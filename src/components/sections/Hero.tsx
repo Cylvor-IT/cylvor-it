@@ -28,9 +28,9 @@ export default function Hero() {
         trigger: container.current,
         pin: true,
         pinSpacing: true,
-        scrub: 1,
+        scrub: 0.5,
         start: "top top",
-        end: "+=4000",
+        end: "+=2000",
         invalidateOnRefresh: true,
         anticipatePin: 1,
       }

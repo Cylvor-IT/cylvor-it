@@ -17,6 +17,15 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       smoothWheel: true,
     });
 
+    // FORCE SCROLL TO TOP ON LOAD
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0); // Native
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+      lenis.scrollTo(0, { immediate: true }); // Lenis
+    }
+
     lenis.on("scroll", ScrollTrigger.update);
 
     gsap.ticker.add((time) => {
