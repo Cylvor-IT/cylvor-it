@@ -7,14 +7,14 @@ import * as THREE from "three";
 // --- THE NEURAL WAVE COMPONENT ---
 function NeuralWave({ count = 8000 }) { // 8000 particles for high density
   const meshRef = useRef<THREE.Points>(null!);
-  
+
   // 1. Generate the initial grid of particles
   const particles = useMemo(() => {
     const temp = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-    
+
     // Create a spread-out grid
-    const side = Math.sqrt(count); 
+    const side = Math.sqrt(count);
     const spacing = 0.5; // Distance between dots
     const offset = (side * spacing) / 2;
 
@@ -38,7 +38,7 @@ function NeuralWave({ count = 8000 }) { // 8000 particles for high density
 
   // Reusable objects to save memory/garbage collection
   const dummyColor = useMemo(() => new THREE.Color(), []);
-  
+
   // --- ANIMATION LOOP ---
   useFrame((state) => {
     if (!meshRef.current) return;
@@ -46,7 +46,7 @@ function NeuralWave({ count = 8000 }) { // 8000 particles for high density
     const t = state.clock.getElapsedTime();
     const positions = meshRef.current.geometry.attributes.position.array as Float32Array;
     const colors = meshRef.current.geometry.attributes.color.array as Float32Array;
-    
+
     // Mouse Position in 3D space (approximate projection)
     const mx = state.pointer.x * 25;
     const my = state.pointer.y * 25;
@@ -58,17 +58,22 @@ function NeuralWave({ count = 8000 }) { // 8000 particles for high density
 
       // 1. BASE WAVE MOTION (Mathematical Sine/Cosine flow)
       // Creates a rolling ocean-like effect
-      let y = Math.sin(x * 0.3 + t) * Math.cos(z * 0.3 + t) * 2;
-      
+      let y = Math.sin(x * 0.3 + t * 0.5) * Math.cos(z * 0.3 + t * 0.5) * 2;
+
       // 2. MOUSE INTERACTION (Magnetic Pull)
       // Calculate distance from particle to mouse
       const dist = Math.sqrt(Math.pow(x - mx, 2) + Math.pow(z + my, 2)); // z + my because screen Y is inverted in 3D Z somewhat
-      
+
       // If mouse is close, pull the particle UP
-      const influenceRadius = 6;
+      // If mouse is close, pull the particle UP with a smooth curve
+      const influenceRadius = 8; // Slightly larger area for smoothness
       if (dist < influenceRadius) {
-        const force = (influenceRadius - dist) / influenceRadius; // 0 to 1 strength
-        y += force * 5; // Lift up by 5 units
+        // Calculate force using a smooth cosine curve (from 0 to PI)
+        // This creates a rounded "bell curve" shape instead of a sharp cone
+        const normalizedDist = dist / influenceRadius; // 0 to 1
+        const force = Math.cos(normalizedDist * (Math.PI / 2)); // 1 at center, 0 at edge
+
+        y += force * 3; // Lift up by 3 units (reduced from 5 for subtler effect)
       }
 
       // Update Position
@@ -77,24 +82,24 @@ function NeuralWave({ count = 8000 }) { // 8000 particles for high density
       // 3. COLOR DYNAMICS
       // Base color: Dim Grey/White
       // Peak/Mouse color: Brand Green (#a3e635)
-      
+
       // If the particle is high up (either from wave or mouse), turn it green
       const height = y; // -2 to +7 range approx
-      
+
       if (height > 2) {
-         // High Point -> GREEN
-         dummyColor.set("#a3e635");
-         // Lerp towards green based on height
-         colors[i3] = 0.64; // R (approx for #a3e635)
-         colors[i3 + 1] = 0.9; // G
-         colors[i3 + 2] = 0.2; // B
+        // High Point -> GREEN
+        dummyColor.set("#a3e635");
+        // Lerp towards green based on height
+        colors[i3] = 0.64; // R (approx for #a3e635)
+        colors[i3 + 1] = 0.9; // G
+        colors[i3 + 2] = 0.2; // B
       } else {
-         // Low Point -> WHITE/GREY fade
-         // Make it darker when low for depth
-         const darkness = 0.3 + ((height + 2) / 4) * 0.5; // range 0.3 to 0.8
-         colors[i3] = darkness;
-         colors[i3 + 1] = darkness;
-         colors[i3 + 2] = darkness;
+        // Low Point -> WHITE/GREY fade
+        // Make it darker when low for depth
+        const darkness = 0.3 + ((height + 2) / 4) * 0.5; // range 0.3 to 0.8
+        colors[i3] = darkness;
+        colors[i3 + 1] = darkness;
+        colors[i3 + 2] = darkness;
       }
     }
 
@@ -115,7 +120,7 @@ function NeuralWave({ count = 8000 }) { // 8000 particles for high density
           args={[particles.colors, 3]}
         />
       </bufferGeometry>
-      <pointsMaterial 
+      <pointsMaterial
         size={0.12} // Dot size
         vertexColors // Use the colors array we calculated
         transparent
@@ -138,14 +143,14 @@ export default function Scene3D_V3() {
     <div className="absolute inset-0 z-0 pointer-events-none">
       <Canvas
         // Camera looking down at an angle for a "landscape" view
-        camera={{ position: [0, 15, 20], fov: 45 }} 
+        camera={{ position: [0, 15, 20], fov: 45 }}
         gl={{ antialias: true }}
         eventSource={eventSource}
         eventPrefix="client"
       >
         {/* Fog creates the "Infinite Distance" fade effect */}
         <fog attach="fog" args={['#000000', 10, 50]} />
-        
+
         <NeuralWave />
 
       </Canvas>

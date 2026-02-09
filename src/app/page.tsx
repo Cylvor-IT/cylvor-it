@@ -2,7 +2,7 @@ import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Services from "@/components/sections/Services";
 import Contact from "@/components/sections/Contact";
-import AboutProcessDetails from "@/components/sections/AboutDetails";
+import AboutDetails from "@/components/sections/AboutDetails";
 import Footer from "@/components/layout/Footer";
 
 export default function Home() {
@@ -15,8 +15,7 @@ export default function Home() {
 
       <div className="relative z-0">
         <About />
-        <AboutProcessDetails />
-        {/* About Details contains the process flow */}
+        <AboutDetails />
         <Services />
         <Contact />
         <Footer />
