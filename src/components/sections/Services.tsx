@@ -61,7 +61,7 @@ export default function Services() {
         trigger: container.current,
         pin: true,
         start: "top top",
-        end: "+=4500",
+        end: "+=2000",
         scrub: 1,
         anticipatePin: 1,
       }
@@ -69,8 +69,8 @@ export default function Services() {
 
     // Animate title to top and scale down
     tl.to(titleRef.current, {
-      scale: 0.35,
-      top: "5%",
+      scale: 0.3,
+      top: "2%",
       yPercent: 0,
       xPercent: -50,
       left: "50%",
@@ -95,7 +95,7 @@ export default function Services() {
     <section
       ref={container}
       id="services"
-      className="relative min-h-screen w-full overflow-hidden pb-48"
+      className="relative min-h-screen w-full overflow-hidden pb-24"
     >
       {/* Animated background grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)]" />
@@ -112,7 +112,7 @@ export default function Services() {
         OUR EXPERTISE
       </h2>
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10 pt-[40vh]">
+      <div className="container mx-auto px-4 md:px-6 relative z-10 pt-[32vh]">
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto pb-16">
           {services.map((service, index) => (
