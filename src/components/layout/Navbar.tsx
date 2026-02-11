@@ -2,16 +2,18 @@
 
 import { useState, useRef } from "react";
 import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { cn } from "@/lib/utils";
 import MagneticWrapper from "@/components/ui/MagneticWrapper";
+import { useTransition } from "@/components/layout/PageTransitionProvider";
 
 const navItems = [
-  { name: "About", href: "#about" },
-  { name: "Services", href: "#services" },
-  { name: "Projects", href: "#projects" },
+  { name: "About", href: "/#about" },
+  { name: "Services", href: "/#services" },
+  { name: "Projects", href: "/projects" },
 ];
 
 const FlipLink = ({ href, children, onClick }: { href: string; children: string; onClick: (h: string) => void }) => {
@@ -35,6 +37,9 @@ const FlipLink = ({ href, children, onClick }: { href: string; children: string;
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef(null);
+  const router = useRouter();
+  const { triggerTransition } = useTransition();
+  const pathname = usePathname();
 
   useGSAP(() => {
     gsap.from(navRef.current, {
@@ -48,8 +53,25 @@ export default function Navbar() {
 
   const handleLinkClick = (href: string) => {
     setIsOpen(false);
-    const target = document.querySelector(href);
-    target?.scrollIntoView({ behavior: "smooth" });
+    
+    if (href.includes("#")) {
+      const [path, hash] = href.split("#");
+      // If we are already on the home page and the link is for an anchor
+      if ((path === "" || path === "/") && pathname === "/") {
+        const target = document.querySelector("#" + hash);
+        target?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        // Navigate to route with hash - transition needed if changing page
+        if (pathname !== "/" && path === "/") {
+            triggerTransition(href);
+        } else {
+            router.push(href);
+        }
+      }
+    } else {
+      // Regular page navigation
+      triggerTransition(href);
+    }
   };
 
   return (
@@ -65,8 +87,8 @@ export default function Navbar() {
 
           {/* --- LEFT: LOGO --- */}
           <a
-            href="#hero"
-            onClick={(e) => { e.preventDefault(); handleLinkClick('#hero'); }}
+            href="/"
+            onClick={(e) => { e.preventDefault(); handleLinkClick('/'); }}
             className="flex items-center gap-3 group z-20"
           >
             <Image

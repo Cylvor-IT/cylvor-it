@@ -7,6 +7,7 @@ import Scene3D_V2 from "@/components/ui/Scene3D_V2";
 import { Preload } from "@react-three/drei";
 import Preloader from "@/components/ui/Preloader";
 import CustomCursor from "@/components/ui/CustomCursor";
+import PageTransitionProvider from "@/components/layout/PageTransitionProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${oswald.variable} font-sans bg-black text-white antialiased`}>
+        <PageTransitionProvider>
         {/* GLOBAL 3D BACKGROUND 
             - Fixed: Stays in place while scrolling
             - z-0: Behind content
@@ -58,6 +60,7 @@ export default function RootLayout({
           </div>
 
         </SmoothScroll>
+        </PageTransitionProvider>
       </body>
     </html>
   );
