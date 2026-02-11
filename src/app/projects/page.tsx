@@ -95,7 +95,7 @@ export default function ProjectsPage() {
             {projects.map((project, index) => (
               <div 
                 key={project.id} 
-                className="project-panel w-screen h-full flex items-center justify-center p-6 md:p-20 relative border-r border-white/5 last:border-r-0"
+                className="project-panel w-screen h-full flex items-center justify-center p-6 md:p-32 relative border-r border-white/5 last:border-r-0"
               >
                  {/* Background Gradient Object (Visual Flair) */}
                  <div className={cn(
