@@ -19,6 +19,7 @@ const oswald = Oswald({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://cylvorit.com"),
   title: "Cylvor IT | Modern Digital Solutions",
   description: "Web development, UI/UX, and digital services.",
   icons: {

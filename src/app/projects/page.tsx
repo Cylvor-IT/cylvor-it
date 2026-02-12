@@ -1,8 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
-import { ArrowUpRight, Github, ExternalLink } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -57,8 +56,8 @@ const projects = [
 ];
 
 export default function ProjectsPage() {
-  const container = useRef(null);
-  const scrollContainer = useRef(null);
+  const container = useRef<HTMLElement | null>(null);
+  const scrollContainer = useRef<HTMLDivElement | null>(null);
 
   useGSAP(() => {
     const sections = gsap.utils.toArray(".project-panel");
@@ -72,7 +71,10 @@ export default function ProjectsPage() {
         pin: true,
         scrub: 1,
         // Adjust the end value to control the speed of the horizontal scroll
-        end: () => "+=" + (scrollContainer.current as any)?.offsetWidth, 
+        end: () => {
+          const width = scrollContainer.current?.offsetWidth ?? 0;
+          return `+=${width}`;
+        },
         snap: {
             snapTo: 1 / (sections.length - 1),
             duration: { min: 0.2, max: 0.3 },
@@ -92,7 +94,7 @@ export default function ProjectsPage() {
           {/* Horizontal Scroll Container */}
           <div ref={scrollContainer} className="flex h-screen w-[400%]">
             
-            {projects.map((project, index) => (
+            {projects.map((project) => (
               <div 
                 key={project.id} 
                 className="project-panel w-screen h-full flex items-center justify-center p-6 md:p-32 relative border-r border-white/5 last:border-r-0"

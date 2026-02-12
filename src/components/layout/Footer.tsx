@@ -94,7 +94,7 @@ export default function Footer() {
               </Link>
               
               <p className="text-zinc-500 font-sans text-sm leading-relaxed max-w-sm mb-8">
-                We don't just write code; we architect digital dominance. Precision-engineered solutions for the next generation of business.
+                We don&apos;t just write code; we architect digital dominance. Precision-engineered solutions for the next generation of business.
               </p>
 
               {/* SOCIAL ICONS (Moved Here) */}

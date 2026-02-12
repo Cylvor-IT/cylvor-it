@@ -89,7 +89,7 @@ export default function Contact() {
         {/* --- HEADER --- */}
         <div className="text-center mb-16 flex flex-col items-center">
            <h2 className="contact-anim text-4xl md:text-7xl font-black uppercase leading-[0.9] font-oswald text-white mb-6">
-             <span className="block mb-2">Let's Build</span>
+             <span className="block mb-2">Let&apos;s Build</span>
              <span className="text-transparent bg-clip-text bg-gradient-to-b from-lime-300 to-lime-600">
                <ScrambleItem>Something Great</ScrambleItem>
              </span>

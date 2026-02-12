@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, ReactElement, cloneElement, useEffect } from "react";
+import { useRef, ReactElement } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 

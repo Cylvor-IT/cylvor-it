@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -133,11 +133,7 @@ function NeuralWave({ count = 8000 }) { // 8000 particles for high density
 
 // --- MAIN SCENE ---
 export default function Scene3D_V3() {
-  const [eventSource, setEventSource] = useState<HTMLElement | undefined>(undefined);
-
-  useEffect(() => {
-    setEventSource(document.body);
-  }, []);
+  const eventSource = typeof document !== "undefined" ? document.body : undefined;
 
   return (
     <div className="absolute inset-0 z-0 pointer-events-none">

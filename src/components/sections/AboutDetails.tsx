@@ -4,7 +4,6 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { cn } from "@/lib/utils";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -47,7 +46,7 @@ export default function AboutDetails() {
 
         // Get the total scroll width (width of track - viewport width)
         const getScrollAmount = () => {
-            let trackWidth = track.scrollWidth;
+            const trackWidth = track.scrollWidth;
             return -(trackWidth - window.innerWidth);
         };
 
@@ -90,7 +89,7 @@ export default function AboutDetails() {
         <section
             ref={sectionRef}
             id="about-details"
-            className="relative w-full h-screen overflow-hidden bg-transparent flex flex-col justify-center pt-20"
+            className="relative w-full h-screen overflow-hidden bg-transparent flex flex-col justify-center pt-10 md:pt-20"
         >
             {/* Background Grid */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none" />
@@ -130,7 +129,7 @@ export default function AboutDetails() {
                 </div>
 
                 {/* The Steps */}
-                {steps.map((step, index) => (
+                {steps.map((step) => (
                     <div
                         key={step.id}
                         className="relative w-[85vw] md:w-[35vw] h-[60vh] md:h-[70vh] shrink-0 bg-zinc-950/80 border border-white/10 p-8 md:p-12 flex flex-col justify-between group hover:border-lime-400/50 transition-colors duration-500 backdrop-blur-md"
