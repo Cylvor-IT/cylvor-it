@@ -79,11 +79,11 @@ export default function Navbar() {
       ref={navRef}
       className="fixed top-0 left-0 right-0 z-50 px-0 md:px-8 py-4"
     >
-      <div className="relative mx-auto max-w-7xl md:rounded-lg overflow-hidden p-[1px] transition-all duration-300">
+      <div className="relative mx-auto max-w-8xl md:rounded-lg overflow-hidden p-[1px] transition-all duration-300">
 
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-[200vw] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,#a3e635_360deg)] opacity-100" />
 
-        <div className="relative h-full w-full bg-black/90 backdrop-blur-xl md:rounded-lg flex items-center justify-between px-6 py-2">
+        <div className="relative h-full w-full bg-zinc-900/80 backdrop-blur-xl md:rounded-lg flex items-center justify-between px-6 py-2">
 
           {/* --- LEFT: LOGO --- */}
           <a
@@ -106,14 +106,13 @@ export default function Navbar() {
           {/* --- CENTER: LINKS --- */}
           <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-12">
             {navItems.map((item) => (
-              <MagneticWrapper key={item.name} strength={0.2} range={60}>
-                <FlipLink
-                  href={item.href}
-                  onClick={handleLinkClick}
-                >
-                  {item.name}
-                </FlipLink>
-              </MagneticWrapper>
+              <FlipLink
+                key={item.name}
+                href={item.href}
+                onClick={handleLinkClick}
+              >
+                {item.name}
+              </FlipLink>
             ))}
           </div>
 
