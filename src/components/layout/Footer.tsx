@@ -199,8 +199,8 @@ export default function Footer() {
 
            {/* Legal Links (Updated Text) */}
            <div className="footer-anim flex gap-8 text-[10px] font-mono uppercase tracking-widest text-zinc-600">
-              <Link href="#" className="hover:text-lime-400 transition-colors">Privacy Policy</Link>
-              <Link href="#" className="hover:text-lime-400 transition-colors">Terms and Conditions</Link>
+              <Link href="/privacy-policy" className="hover:text-lime-400 transition-colors">Privacy Policy</Link>
+              <Link href="/terms-and-conditions" className="hover:text-lime-400 transition-colors">Terms and Conditions</Link>
            </div>
            
         </div>
