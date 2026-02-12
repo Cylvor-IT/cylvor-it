@@ -4,7 +4,6 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Scene3D_V2 from "@/components/ui/Scene3D_V2";
-import { Preload } from "@react-three/drei";
 import Preloader from "@/components/ui/Preloader";
 import CustomCursor from "@/components/ui/CustomCursor";
 import PageTransitionProvider from "@/components/layout/PageTransitionProvider";
@@ -47,11 +46,6 @@ export default function RootLayout({
         </div>
 
         <SmoothScroll>
-          <div
-            aria-hidden="true"
-            className="pointer-events-none fixed inset-1 md:inset-2 z-[9999] rounded-md border border-zinc-900/20 shadow-[0_0_0_9999px_white]"
-          />
-
           <Navbar />
 
           {/* Ensure children have a relative z-index to sit ON TOP of the background */}
@@ -60,6 +54,10 @@ export default function RootLayout({
           </div>
 
         </SmoothScroll>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none fixed inset-x-0 bottom-0 z-[9998] h-px bg-lime-400"
+          />
         </PageTransitionProvider>
       </body>
     </html>
