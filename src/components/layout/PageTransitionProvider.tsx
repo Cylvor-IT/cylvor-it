@@ -6,7 +6,9 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 const TransitionContext = createContext({
-  triggerTransition: (href: string) => {},
+  triggerTransition: (href: string) => {
+    void href;
+  },
 });
 
 export const useTransition = () => useContext(TransitionContext);
@@ -51,7 +53,7 @@ export default function PageTransitionProvider({ children }: { children: React.R
     
     setIsTransitioning(true);
 
-    const ctx = gsap.context(() => {
+    gsap.context(() => {
         const tl = gsap.timeline({
             onComplete: () => {
                 router.push(href);
