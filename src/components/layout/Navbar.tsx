@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -38,6 +38,7 @@ const FlipLink = ({ href, children, onClick }: { href: string; children: string;
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { triggerTransition } = useTransition();
   const pathname = usePathname();
@@ -51,6 +52,46 @@ export default function Navbar() {
       delay: 0.2,
     });
   });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (!isMobile) return;
+
+    const menu = mobileMenuRef.current;
+    if (!menu) return;
+
+    // Ensure a consistent baseline for the animation
+    gsap.set(menu, { overflow: "hidden" });
+
+    if (isOpen) {
+      gsap.set(menu, { display: "block" });
+      gsap.to(menu, {
+        height: "auto",
+        opacity: 1,
+        y: 0,
+        duration: 0.35,
+        ease: "power3.out",
+        overwrite: true,
+      });
+    } else {
+      // If it's not open initially, keep it fully collapsed without flashing
+      const currentDisplay = window.getComputedStyle(menu).display;
+      if (currentDisplay === "none") return;
+
+      gsap.to(menu, {
+        height: 0,
+        opacity: 0,
+        y: -8,
+        duration: 0.25,
+        ease: "power2.inOut",
+        overwrite: true,
+        onComplete: () => {
+          gsap.set(menu, { display: "none" });
+        },
+      });
+    }
+  }, [isOpen]);
 
   const handleLinkClick = (href: string) => {
     setIsOpen(false);
@@ -84,13 +125,13 @@ export default function Navbar() {
 
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-[200vw] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,#a3e635_360deg)] opacity-100" />
 
-        <div className="relative h-full w-full bg-zinc-900/80 backdrop-blur-xl md:rounded-lg flex items-center justify-between px-6 py-2">
+        <div className="relative h-full w-full bg-zinc-900/80 backdrop-blur-xl md:rounded-lg flex items-center justify-between px-4 md:px-6 py-2">
 
           {/* --- LEFT: LOGO --- */}
           <Link
             href="/"
             onClick={(e) => { e.preventDefault(); handleLinkClick('/'); }}
-            className="flex items-center gap-3 group z-20"
+            className="flex items-center gap-3 group z-20 min-w-0"
           >
             <Image
               src="/assets/logo.svg"
@@ -99,7 +140,7 @@ export default function Navbar() {
               height={40}
               className="w-8 h-8 md:w-10 md:h-10 object-contain transition-transform group-hover:scale-110"
             />
-            <span className="font-oswald font-bold text-white uppercase tracking-wider text-lg leading-none">
+            <span className="font-oswald font-bold text-white uppercase tracking-wider text-base sm:text-lg leading-none whitespace-nowrap">
               Cylvor IT
             </span>
           </Link>
@@ -121,7 +162,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4 z-20">
             <MagneticWrapper strength={0.4} range={100}>
               <button
-                onClick={() => handleLinkClick('#contact')}
+                onClick={() => handleLinkClick('/#contact')}
                 className="hidden md:flex relative items-center gap-2 px-8 py-3 bg-lime-400 text-black text-sm font-bold uppercase tracking-wider transition-all font-oswald clip-path-slant shadow-[0_0_15px_rgba(163,230,53,0.4)] hover:shadow-[0_0_25px_rgba(163,230,53,0.6)] overflow-hidden group"
                 style={{ clipPath: "polygon(10% 0, 100% 0, 100% 100%, 0% 100%)" }}
               >
@@ -154,12 +195,17 @@ export default function Navbar() {
           </div>
 
         </div>
+      </div>
 
-        {/* --- MOBILE DROPDOWN --- */}
-        <div className={cn(
-          "absolute top-full left-0 right-0 mt-2 mx-4 bg-[#0a0a0a] border border-lime-400/20 rounded-lg shadow-2xl overflow-hidden md:hidden flex flex-col transition-all duration-300 origin-top z-50",
-          isOpen ? "opacity-100 scale-100 translate-y-0 max-h-[400px]" : "opacity-0 scale-95 -translate-y-2 max-h-0 pointer-events-none"
-        )}>
+      {/* --- MOBILE DROPDOWN --- */}
+      <div className={cn(
+        "md:hidden mt-2 px-4"
+      )}>
+        <div
+          ref={mobileMenuRef}
+          className="mx-auto max-w-8xl bg-[#0a0a0a] border border-lime-400/20 rounded-lg shadow-2xl flex flex-col"
+          style={{ display: "none", height: 0, opacity: 0, transform: "translateY(-8px)" }}
+        >
           <div className="p-4 flex flex-col gap-2">
             {navItems.map((item) => (
               <button
@@ -172,14 +218,13 @@ export default function Navbar() {
             ))}
             <div className="h-px bg-white/10 my-2" />
             <button
-              onClick={() => handleLinkClick("#contact")}
+              onClick={() => handleLinkClick("/#contact")}
               className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-lime-400 hover:bg-lime-500 text-black font-bold text-xs uppercase tracking-widest rounded transition-colors font-oswald shadow-[0_0_15px_rgba(163,230,53,0.5)]"
             >
-              Start Project <ArrowUpRight className="w-3 h-3" />
+              Let&apos;s Talk <ArrowUpRight className="w-3 h-3" />
             </button>
           </div>
         </div>
-
       </div>
     </nav>
   );

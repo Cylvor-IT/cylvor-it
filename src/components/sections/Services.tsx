@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -43,7 +43,6 @@ export default function Services() {
   const container = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   useGSAP(() => {
     // Media query to only run complex animation on desktop
@@ -157,6 +156,7 @@ export default function Services() {
       });
     });
 
+    return () => mm.revert();
   }, { scope: container });
 
   return (
@@ -175,31 +175,32 @@ export default function Services() {
       {/* Title - Increased z-index significantly */}
       <h2
         ref={titleRef}
-        className="z-50 text-[10vw] leading-none font-black font-oswald text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600 whitespace-nowrap select-none drop-shadow-2xl will-change-transform pointer-events-none text-center"
+        className="z-50 text-[12vw] md:text-[10vw] leading-none font-black font-oswald text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600 whitespace-nowrap select-none drop-shadow-2xl will-change-transform pointer-events-none text-center"
       >
         SERVICES
       </h2>
 
       <div className="container mx-auto px-4 relative z-10 h-full flex items-center justify-center">
-        {/* Stacking Cards Container - Increased top margin to push away from title, decreased width */}
-        <div ref={cardsContainerRef} className="relative w-full max-w-[350px] aspect-[3/4] md:mt-[150px]">
+        {/* Mobile: vertical list. Desktop: stacked container for pin animation. */}
+        <div
+          ref={cardsContainerRef}
+          className="w-full max-w-[420px] flex flex-col gap-6 md:block md:relative md:max-w-[350px] md:aspect-[3/4] md:mt-[150px]"
+        >
           {services.map((service, index) => (
             <article
               key={service.id}
-              className="service-card absolute inset-0 w-full h-full"
+              className="service-card relative w-full md:absolute md:inset-0 md:h-full"
               style={{ zIndex: index + 1 }} // Ensure natural stacking order
-              onMouseEnter={() => setHoveredCard(service.id)}
-              onMouseLeave={() => setHoveredCard(null)}
             >
               {/* Card - Glassmorphism */}
-              <div className="relative h-full bg-zinc-900 border border-white/10 rounded-[2rem] p-8 flex flex-col overflow-hidden transition-all duration-300 shadow-2xl shadow-black">
+              <div className="relative bg-zinc-900 border border-white/10 rounded-[2rem] p-6 md:p-8 flex flex-col overflow-hidden transition-all duration-300 shadow-2xl shadow-black md:h-full">
 
                 {/* Hover Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-b from-lime-500/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                 {/* Header: Number & Icon */}
-                <div className="flex items-start justify-between mb-8">
-                  <span className="text-5xl font-light font-oswald text-zinc-700 select-none">
+                <div className="flex items-start justify-between mb-6 md:mb-8">
+                  <span className="text-4xl md:text-5xl font-light font-oswald text-zinc-700 select-none">
                     {service.id}
                   </span>
                   <div className="group/icon p-2 rounded-full bg-white/5 border border-white/10 hover:bg-lime-500 hover:border-lime-500 transition-all duration-300">
@@ -208,17 +209,17 @@ export default function Services() {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-3xl font-bold font-oswald text-white mb-4 tracking-wide group-hover:text-lime-400 transition-colors duration-300">
+                <h3 className="text-2xl md:text-3xl font-bold font-oswald text-white mb-3 md:mb-4 tracking-wide group-hover:text-lime-400 transition-colors duration-300">
                   {service.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-zinc-400 text-sm leading-relaxed mb-6 font-light">
+                <p className="text-zinc-400 text-sm leading-relaxed mb-5 md:mb-6 font-light">
                   {service.desc}
                 </p>
 
                 {/* Features List */}
-                <div className="mb-6 space-y-2 flex-grow">
+                <div className="mb-6 space-y-2 md:flex-grow">
                   {service.features.map((feature) => (
                     <div key={feature} className="flex items-center gap-3 text-zinc-500">
                       <div className="w-1 h-1 rounded-full bg-lime-500/50" />

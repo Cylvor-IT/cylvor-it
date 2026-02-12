@@ -90,7 +90,7 @@ export default function AboutDetails() {
         <section
             ref={sectionRef}
             id="about-details"
-            className="relative w-full h-screen overflow-hidden bg-transparent flex flex-col justify-center pt-20"
+            className="relative w-full h-screen overflow-hidden bg-transparent flex flex-col justify-center pt-10 md:pt-20"
         >
             {/* Background Grid */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none" />
