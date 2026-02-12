@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -13,81 +13,149 @@ const services = [
     id: "01",
     title: "Web Development",
     tags: ["Next.js", "React", "SEO"],
-    desc: "High-performance websites built for speed and visibility. We craft responsive, lightning-fast web experiences optimized for search engines and conversions. From landing pages to complex web platforms, we deliver solutions that drive business growth.",
+    desc: "High-performance websites built for speed and visibility. We craft responsive, lightning-fast web experiences optimized for search engines and conversions.",
     features: ["Responsive Design", "Performance Optimization", "SEO Strategy"],
   },
   {
     id: "02",
     title: "Custom Web Apps",
     tags: ["SaaS", "Internal Tools"],
-    desc: "Scalable platforms tailored to your specific workflow. We build custom web applications that streamline operations, enhance productivity, and scale with your business. Enterprise-grade solutions with modern architecture.",
+    desc: "Scalable platforms tailored to your specific workflow. We build custom web applications that streamline operations and enhance productivity.",
     features: ["Custom Dashboards", "API Integration", "Cloud Infrastructure"],
   },
   {
     id: "03",
     title: "UI/UX Design",
     tags: ["Figma", "Design Systems"],
-    desc: "Intuitive interfaces that drive user engagement. Our design process combines user research, data-driven insights, and creative innovation to create beautiful, functional experiences that users love.",
+    desc: "Intuitive interfaces that drive user engagement. Our design process combines user research, data-driven insights, and creative innovation.",
     features: ["User Research", "Prototyping", "Design Systems"],
   },
   {
     id: "04",
     title: "Mobile Solutions",
     tags: ["iOS", "Android", "React Native"],
-    desc: "Native-feel applications for every device. We develop cross-platform mobile apps that deliver seamless performance and engaging user experiences. From concept to App Store, we handle the entire mobile journey.",
+    desc: "Native-feel applications for every device. We develop cross-platform mobile apps that deliver seamless performance and engaging user experiences.",
     features: ["Cross-Platform Dev", "Native Features", "App Store Publishing"],
   },
 ];
 
 export default function Services() {
-  const container = useRef(null);
-  const titleRef = useRef(null);
+  const container = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   useGSAP(() => {
-    // Initial Title State - centered in viewport
-    gsap.set(titleRef.current, {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      xPercent: -50,
-      yPercent: -50,
-      scale: 1,
-      opacity: 1,
-    });
+    // Media query to only run complex animation on desktop
+    const mm = gsap.matchMedia();
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: container.current,
-        pin: true,
-        start: "top top",
-        end: "+=2000",
-        scrub: 1,
-        anticipatePin: 1,
+    mm.add("(min-width: 768px)", () => {
+      // Setup: Cards 2, 3, 4 start off-screen
+      const cards = gsap.utils.toArray(".service-card") as HTMLElement[];
+
+      // Initial state for title
+      if (titleRef.current) {
+        gsap.set(titleRef.current, {
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          xPercent: -50,
+          yPercent: -50,
+          zIndex: 10,
+        });
+      }
+
+      // Initial state for cards
+      cards.forEach((card, i) => {
+        if (i > 0) {
+          gsap.set(card, {
+            yPercent: 120, // Push them further down initially
+            opacity: 0,
+            scale: 0.9
+          });
+        } else {
+          gsap.set(card, {
+            yPercent: 120,
+            opacity: 0,
+            scale: 0.9
+          });
+        }
+      });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container.current,
+          pin: true,
+          start: "top top",
+          end: "+=2500", // Slightly shorter scroll distance for snappier feel
+          scrub: 1.5, // Creating softer catch-up for smoothness
+          anticipatePin: 1,
+        }
+      });
+
+      // 1. Move Title Up - Keep it visible & high
+      if (titleRef.current) {
+        tl.to(titleRef.current, {
+          scale: 0.8, // Don't scale down too much
+          top: "5%",
+          yPercent: 0,
+          duration: 0.5,
+          ease: "power2.inOut",
+        });
+      }
+
+      // 2. Bring in Card 1
+      if (cards[0]) {
+        tl.to(cards[0], {
+          yPercent: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          ease: "power3.out",
+        }, "<+=0.1");
+      }
+
+      // 3. Stacking Animation for subsequent cards
+      for (let i = 1; i < cards.length; i++) {
+        // More subtle scale down of previous card
+        if (cards[i - 1]) {
+          tl.to(cards[i - 1], {
+            scale: 0.95 - (i * 0.03),
+            y: -20 * i,
+            filter: "brightness(0.7)",
+            duration: 0.8,
+            ease: "power2.inOut"
+          }, `card-${i}`);
+        }
+
+        // Current card slides up
+        if (cards[i]) {
+          tl.to(cards[i], {
+            yPercent: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1,
+            ease: "power3.out",
+          }, `card-${i}-=0.6`);
+        }
       }
     });
 
-    // Animate title to top and scale down
-    tl.to(titleRef.current, {
-      scale: 0.3,
-      top: "2%",
-      yPercent: 0,
-      xPercent: -50,
-      left: "50%",
-      opacity: 0.8, // Slightly fade it out when it moves up
-      ease: "power2.inOut",
-      duration: 0.5,
-    }, "start");
-
-    // Animate cards with stagger
-    tl.from(".service-card", {
-      y: 100,
-      opacity: 0,
-      scale: 0.95, // Subtle scale
-      stagger: 0.1,
-      duration: 0.8,
-      ease: "power2.out",
-    }, "start+=0.4");
+    // Mobile animation (simple vertical scroll)
+    mm.add("(max-width: 767px)", () => {
+      (gsap.utils.toArray(".service-card") as HTMLElement[]).forEach((card) => {
+        gsap.from(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: "top 80%",
+          },
+          y: 50,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power2.out"
+        });
+      });
+    });
 
   }, { scope: container });
 
@@ -95,97 +163,86 @@ export default function Services() {
     <section
       ref={container}
       id="services"
-      className="relative min-h-screen w-full overflow-hidden pb-24"
+      className="relative min-h-screen w-full overflow-hidden bg-transparent"
     >
       {/* Animated background grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)]" />
 
       {/* Gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-lime-500/30 rounded-full blur-[120px] animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[120px] animate-pulse delay-1000" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-lime-500/20 rounded-full blur-[120px] animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] animate-pulse delay-1000" />
 
-      {/* Title - Gradient Text Effect */}
+      {/* Title - Increased z-index significantly */}
       <h2
         ref={titleRef}
-        className="z-10 text-[12vw] leading-none font-black font-oswald text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600 whitespace-nowrap select-none drop-shadow-2xl will-change-transform pointer-events-none"
+        className="z-50 text-[10vw] leading-none font-black font-oswald text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600 whitespace-nowrap select-none drop-shadow-2xl will-change-transform pointer-events-none text-center"
       >
-        OUR EXPERTISE
+        SERVICES
       </h2>
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10 pt-[32vh]">
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto pb-16">
+      <div className="container mx-auto px-4 relative z-10 h-full flex items-center justify-center">
+        {/* Stacking Cards Container - Increased top margin to push away from title, decreased width */}
+        <div ref={cardsContainerRef} className="relative w-full max-w-[350px] aspect-[3/4] md:mt-[150px]">
           {services.map((service, index) => (
             <article
               key={service.id}
-              className="service-card group relative"
+              className="service-card absolute inset-0 w-full h-full"
+              style={{ zIndex: index + 1 }} // Ensure natural stacking order
               onMouseEnter={() => setHoveredCard(service.id)}
               onMouseLeave={() => setHoveredCard(null)}
             >
-              {/* Card container */}
-              <div className="relative h-full transition-all duration-500 ease-out group-hover:-translate-y-2">
+              {/* Card - Glassmorphism */}
+              <div className="relative h-full bg-zinc-900 border border-white/10 rounded-[2rem] p-8 flex flex-col overflow-hidden transition-all duration-300 shadow-2xl shadow-black">
 
-                {/* Main card - Glassmorphism & Borders */}
-                <div className="relative h-full bg-zinc-900/40 backdrop-blur-md rounded-[2rem] p-8 md:p-12 border border-white/5 overflow-hidden transition-all duration-500 group-hover:border-lime-500/30 group-hover:bg-zinc-900/60 shadow-2xl shadow-black/50">
+                {/* Hover Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-lime-500/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                  {/* Hover Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-lime-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-                  {/* Content */}
-                  <div className="relative z-10 flex flex-col h-full">
-
-                    {/* Header: Number & Icon */}
-                    <div className="flex items-start justify-between mb-10">
-                      <span className="text-6xl font-light font-oswald text-transparent bg-clip-text bg-gradient-to-b from-zinc-700 to-zinc-900 group-hover:from-lime-500/50 group-hover:to-transparent transition-all duration-500 select-none">
-                        {service.id}
-                      </span>
-                      <div className="p-3 rounded-full bg-white/5 border border-white/10 group-hover:bg-lime-500 group-hover:border-lime-500 transition-all duration-300 group-hover:scale-110">
-                        <ArrowUpRight className="w-5 h-5 text-white group-hover:text-black transition-colors duration-300" />
-                      </div>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-3xl md:text-4xl font-bold font-oswald text-white mb-6 tracking-wide group-hover:text-lime-400 transition-colors duration-300">
-                      {service.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-zinc-400 text-base md:text-lg leading-relaxed mb-8 group-hover:text-zinc-300 transition-colors duration-300 font-light block flex-grow">
-                      {service.desc}
-                    </p>
-
-                    {/* Features List - Minimalist */}
-                    <div className="mb-8 space-y-2">
-                      {service.features.map((feature) => (
-                        <div key={feature} className="flex items-center gap-3 text-zinc-500 group-hover:text-zinc-400 transition-colors duration-300">
-                          <div className="w-1.5 h-1.5 rounded-full bg-lime-500/50 group-hover:bg-lime-400 transition-colors duration-300" />
-                          <span className="text-sm tracking-wide">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Tags - Refined Pills */}
-                    <div className="flex flex-wrap gap-2 mt-auto pt-6 border-t border-white/5 group-hover:border-white/10 transition-colors duration-300">
-                      {service.tags.map((tag, tagIndex) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 scale-95 hover:scale-100 rounded-full text-[11px] font-medium uppercase tracking-widest border border-white/5 bg-white/5 text-zinc-400 transition-all duration-300 cursor-default hover:bg-white/10 hover:text-white hover:border-white/20"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                {/* Header: Number & Icon */}
+                <div className="flex items-start justify-between mb-8">
+                  <span className="text-5xl font-light font-oswald text-zinc-700 select-none">
+                    {service.id}
+                  </span>
+                  <div className="group/icon p-2 rounded-full bg-white/5 border border-white/10 hover:bg-lime-500 hover:border-lime-500 transition-all duration-300">
+                    <ArrowUpRight className="w-5 h-5 text-white group-hover/icon:text-black transition-colors duration-300" />
                   </div>
+                </div>
+
+                {/* Title */}
+                <h3 className="text-3xl font-bold font-oswald text-white mb-4 tracking-wide group-hover:text-lime-400 transition-colors duration-300">
+                  {service.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-zinc-400 text-sm leading-relaxed mb-6 font-light">
+                  {service.desc}
+                </p>
+
+                {/* Features List */}
+                <div className="mb-6 space-y-2 flex-grow">
+                  {service.features.map((feature) => (
+                    <div key={feature} className="flex items-center gap-3 text-zinc-500">
+                      <div className="w-1 h-1 rounded-full bg-lime-500/50" />
+                      <span className="text-xs tracking-wide">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 pt-6 border-t border-white/5">
+                  {service.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-widest border border-white/5 bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white transition-all duration-300"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             </article>
           ))}
         </div>
       </div>
-
-      <style jsx global>{`
-        /* Any global styles needed specific to this section */
-      `}</style>
     </section>
   );
 }
