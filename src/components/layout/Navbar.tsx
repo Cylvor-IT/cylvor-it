@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
@@ -86,7 +87,7 @@ export default function Navbar() {
         <div className="relative h-full w-full bg-zinc-900/80 backdrop-blur-xl md:rounded-lg flex items-center justify-between px-6 py-2">
 
           {/* --- LEFT: LOGO --- */}
-          <a
+          <Link
             href="/"
             onClick={(e) => { e.preventDefault(); handleLinkClick('/'); }}
             className="flex items-center gap-3 group z-20"
@@ -101,7 +102,7 @@ export default function Navbar() {
             <span className="font-oswald font-bold text-white uppercase tracking-wider text-lg leading-none">
               Cylvor IT
             </span>
-          </a>
+          </Link>
 
           {/* --- CENTER: LINKS --- */}
           <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-12">
@@ -129,7 +130,7 @@ export default function Navbar() {
 
                 {/* 2. CONTENT (Text color change + Icon Swap) */}
                 <div className="relative z-10 flex items-center gap-2 group-hover:text-lime-400 transition-colors duration-300">
-                  <span>Let's Talk</span>
+                  <span>Let&apos;s Talk</span>
 
                   {/* ICON CONTAINER: Increased size to w-5 h-5 and added flex centering to prevent cropping */}
                   <div className="relative w-5 h-5 overflow-hidden flex items-center justify-center">
