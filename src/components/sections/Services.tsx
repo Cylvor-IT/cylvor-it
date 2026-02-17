@@ -70,13 +70,15 @@ export default function Services() {
           gsap.set(card, {
             yPercent: 120, // Push them further down initially
             opacity: 0,
-            scale: 0.9
+            scale: 0.9,
+            force3D: true
           });
         } else {
           gsap.set(card, {
             yPercent: 120,
             opacity: 0,
-            scale: 0.9
+            scale: 0.9,
+            force3D: true
           });
         }
       });
@@ -121,10 +123,10 @@ export default function Services() {
           tl.to(cards[i - 1], {
             scale: 1 - (i * 0.05), // Subtle scale down for stacking effect
             yPercent: 0, // Stay in place
-            opacity: 1, // Keep visible
-            filter: "brightness(0.5)", // Darken slightly to show depth
+            opacity: 0.92, // Slight fade for depth without filter flicker
             duration: 0.8,
             ease: "power2.out",
+            force3D: true,
           }, `+=0.5`); // Consistent reading time gap
         }
 
@@ -136,6 +138,7 @@ export default function Services() {
             scale: 1,
             duration: 0.8,
             ease: "power3.out",
+            force3D: true,
           }, "<+=0.1"); // Slide in while previous one settles
         }
       }
@@ -182,68 +185,58 @@ export default function Services() {
         {/* Mobile: vertical list. Desktop: stacked container for pin animation. */}
         <div
           ref={cardsContainerRef}
-          className="w-full max-w-[420px] flex flex-col gap-6 md:block md:relative md:max-w-[650px] md:h-[400px] md:mt-[250px]"
+          className="w-full max-w-[360px] flex flex-col gap-5 md:block md:relative md:max-w-[560px] md:h-[340px] md:mt-[230px]"
         >
           {services.map((service, index) => (
             <article
               key={service.id}
-              className="service-card relative w-full md:absolute md:inset-0 md:h-full"
-              style={{ zIndex: index + 1 }} // Ensure natural stacking order
+              className="service-card group relative w-full md:absolute md:inset-0 md:h-full"
+              style={{ zIndex: index + 1, backfaceVisibility: "hidden", transform: "translateZ(0)" }} // Ensure natural stacking order
             >
-              {/* Card - Glassmorphism */}
-              <div className="relative bg-zinc-900 border border-white/10 rounded-[2rem] p-6 md:p-8 flex flex-col overflow-hidden transition-all duration-300 shadow-2xl shadow-black md:h-full justify-between">
+              <div className="relative md:h-full rounded-[2rem] bg-zinc-800 p-[1px] transition-all duration-500 group-hover:bg-lime-500">
+                <div className="relative bg-zinc-900 border border-zinc-700 rounded-[calc(2rem-1px)] p-5 md:p-6 flex flex-col overflow-hidden transition-all duration-500 shadow-2xl shadow-black/70 md:h-full justify-between group-hover:border-lime-400 group-hover:-translate-y-1">
 
-                {/* Hover Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-lime-500/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  <div className="relative z-10 flex md:flex-row flex-col md:items-start md:justify-between gap-5">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-4">
+                        <span className="text-4xl md:text-5xl font-light font-oswald text-zinc-600 select-none leading-none">
+                          {service.id}
+                        </span>
+                        <h3 className="text-2xl md:text-3xl font-bold font-oswald text-white tracking-wide transition-colors duration-300 group-hover:text-lime-300">
+                          {service.title}
+                        </h3>
+                      </div>
 
-                <div className="flex md:flex-row flex-col md:items-start md:justify-between gap-4">
-                  <div>
-                    {/* Header: Number & Icon */}
-                    <div className="flex items-center gap-4 mb-4">
-                      <span className="text-4xl md:text-5xl font-light font-oswald text-zinc-700 select-none">
-                        {service.id}
-                      </span>
-                      {/* Title */}
-                      <h3 className="text-2xl md:text-3xl font-bold font-oswald text-white tracking-wide group-hover:text-lime-400 transition-colors duration-300">
-                        {service.title}
-                      </h3>
+                      <p className="text-zinc-300/90 text-sm leading-relaxed font-light max-w-md">
+                        {service.desc}
+                      </p>
                     </div>
 
-                    {/* Description */}
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-5 md:mb-6 font-light max-w-md">
-                      {service.desc}
-                    </p>
+                    <div className="group/icon p-3 rounded-full bg-zinc-800 border border-zinc-600 transition-all duration-300 self-start group-hover:bg-lime-400 group-hover:border-lime-400">
+                      <ArrowUpRight className="w-6 h-6 text-white transition-colors duration-300 group-hover/icon:text-black" />
+                    </div>
                   </div>
 
-                  {/* Action Button - Repositioned for wide layout */}
-                  <div className="group/icon p-3 rounded-full bg-white/5 border border-white/10 hover:bg-lime-500 hover:border-lime-500 transition-all duration-300 self-start md:self-start">
-                    <ArrowUpRight className="w-6 h-6 text-white group-hover/icon:text-black transition-colors duration-300" />
-                  </div>
-                </div>
+                  <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6 pt-6 mt-6 border-t border-zinc-700">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                      {services[index].features.map((feature) => (
+                        <div key={feature} className="flex items-center gap-3 text-zinc-400 group-hover:text-zinc-200 transition-colors duration-300">
+                          <div className="w-1.5 h-1.5 rounded-full bg-lime-400" />
+                          <span className="text-[11px] uppercase tracking-[0.18em] font-medium">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
 
-
-                {/* Features & Tags Container */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-6 border-t border-white/5">
-                  {/* Features List */}
-                  <div className="space-y-2">
-                    {services[index].features.map((feature) => (
-                      <div key={feature} className="flex items-center gap-3 text-zinc-500">
-                        <div className="w-1.5 h-1.5 rounded-full bg-lime-500/50" />
-                        <span className="text-xs uppercase tracking-wider font-medium">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {service.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-widest border border-white/5 bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white transition-all duration-300"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    <div className="flex flex-wrap gap-2">
+                      {service.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-widest border border-zinc-600 bg-zinc-800 text-zinc-300 transition-all duration-300 group-hover:border-lime-400 group-hover:text-white"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
