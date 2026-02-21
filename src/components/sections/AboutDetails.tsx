@@ -5,7 +5,6 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-
 gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
@@ -36,115 +35,135 @@ const steps = [
 ];
 
 export default function AboutDetails() {
-    const sectionRef = useRef(null);
+    const sectionRef = useRef<HTMLElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
-    const titleContainerRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        const track = trackRef.current;
-        if (!track) return;
+        const mm = gsap.matchMedia();
 
-        // Get the total scroll width (width of track - viewport width)
-        const getScrollAmount = () => {
-            const trackWidth = track.scrollWidth;
-            return -(trackWidth - window.innerWidth);
-        };
+        // DESKTOP & TABLET: Pinned Horizontal Scroll
+        mm.add("(min-width: 768px)", () => {
+            const track = trackRef.current;
+            if (!track) return;
 
-        // Create a master timeline
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: sectionRef.current,
-                start: "top top",
-                end: () => `+=${Math.abs(getScrollAmount()) + 2500}`, // Deep scroll for distinct steps
-                pin: true,
-                scrub: 1, // Smooth scrub
-                invalidateOnRefresh: true,
-            }
-        });
+            // Calculate exactly how far to slide left
+            // We add 40px (or any padding) so the last card doesn't touch the exact edge of the monitor
+            const getScrollAmount = () => -(track.scrollWidth - window.innerWidth + 80);
 
-        // 1. Text Reveal Animation (Simultaneous)
-        // We want: HOW, WE, WORK to reveal together with a slight stagger for elegance
-        const chars = titleContainerRef.current?.querySelectorAll(".reveal-text");
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    // Scroll distance proportional to the width + extra for the text reveal phase
+                    end: () => `+=${Math.abs(getScrollAmount()) + window.innerHeight}`,
+                    pin: true,
+                    scrub: 1, // Smooth scrub for Lenis
+                    invalidateOnRefresh: true, // Recalculate if window resizes
+                    anticipatePin: 1,
+                }
+            });
 
-        if (chars && chars.length > 0) {
-            tl.to(chars, {
+            // 1. Text Reveal Animation (Starts immediately upon pinning)
+            tl.to(".reveal-text", {
                 y: "0%",
                 duration: 1,
-                stagger: 0.1, // Slight stagger for "wave" effect, effectively simultaneous perception
+                stagger: 0.15,
                 ease: "power3.out"
             });
-            tl.to({}, { duration: 0.5 }); // Gap before horizontal scroll
-        }
 
-        // 2. Horizontal Scroll
-        tl.to(track, {
-            x: getScrollAmount,
-            ease: "none",
-            duration: 10, // Much longer relative to the text reveals, so dragging feels like a proper horizontal scroll
+            // 2. Tiny pause so the user registers the text before it moves away
+            tl.to({}, { duration: 0.3 });
+
+            // 3. Horizontal Scroll of the track
+            tl.to(track, {
+                x: getScrollAmount,
+                duration: 4, // Higher duration relative to text reveal so sliding takes up most of the scroll
+                ease: "none",
+            });
         });
 
+        // MOBILE: Vertical Scroll (No pinning, stacked layout)
+        mm.add("(max-width: 767px)", () => {
+            // Instantly show the text on mobile (no complex reveal needed)
+            gsap.set(".reveal-text", { y: "0%" });
+
+            // Fade in each step card as it enters the viewport
+            gsap.utils.toArray(".mobile-step-card").forEach((card: any) => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 85%",
+                    },
+                    y: 40,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+            });
+        });
+
+        return () => mm.revert(); // Clean up on unmount or resize
     }, { scope: sectionRef });
 
     return (
         <section
             ref={sectionRef}
             id="about-details"
-            className="relative w-full h-screen overflow-hidden bg-transparent flex flex-col justify-center pt-10 md:pt-20"
+            className="relative w-full md:h-screen bg-transparent flex flex-col justify-center overflow-hidden"
         >
             {/* Background Grid */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none z-0" />
 
-            {/* Horizontal Track - Uses pr-[30vw] for correct last-card centering */}
+            {/* Track Container 
+                - Desktop: flex-row, h-full, w-max (allows horizontal scroll)
+                - Mobile: flex-col, h-auto, w-full, stacked naturally with padding
+            */}
             <div
                 ref={trackRef}
-                className="flex gap-4 md:gap-10 px-6 md:px-10 w-fit items-center h-full pr-[20vw] md:pr-[30vw]"
+                className="relative z-10 flex flex-col md:flex-row gap-6 md:gap-10 w-full md:w-max h-auto md:h-full px-6 py-20 md:py-0 md:px-10 items-center will-change-transform"
             >
-                {/* Intro Card */}
-                <div className="w-[80vw] md:w-[40vw] h-[60vh] shrink-0 flex flex-col justify-end p-8 border-l border-white/20">
-
-                    {/* Mask Reveal Container */}
-                    <div ref={titleContainerRef} className="flex flex-col gap-0">
+                {/* Intro Card: "HOW WE WORK" */}
+                <div className="w-full md:w-[45vw] lg:w-[40vw] h-auto md:h-[60vh] shrink-0 flex flex-col justify-end md:p-8 md:border-l border-white/20 mb-12 md:mb-0">
+                    <div className="flex flex-col gap-0 md:gap-2">
                         {/* Line 1 */}
-                        <div className="overflow-hidden">
-                            <h2 className="reveal-text text-6xl md:text-9xl font-black text-white font-oswald uppercase leading-[0.9] translate-y-full">
+                        <div className="overflow-hidden pb-2 md:pb-0">
+                            <h2 className="reveal-text text-[15vw] md:text-8xl lg:text-9xl font-black text-white font-oswald uppercase leading-[0.85] md:translate-y-[110%] will-change-transform">
                                 HOW
                             </h2>
                         </div>
                         {/* Line 2 */}
-                        <div className="overflow-hidden">
-                            <h2 className="reveal-text text-6xl md:text-9xl font-black text-white font-oswald uppercase leading-[0.9] translate-y-full">
+                        <div className="overflow-hidden pb-2 md:pb-0">
+                            <h2 className="reveal-text text-[15vw] md:text-8xl lg:text-9xl font-black text-white font-oswald uppercase leading-[0.85] md:translate-y-[110%] will-change-transform">
                                 WE
                             </h2>
                         </div>
                         {/* Line 3 - Green */}
-                        <div className="overflow-hidden">
-                            <h2 className="reveal-text text-6xl md:text-9xl font-black text-lime-400 font-oswald uppercase leading-[0.9] translate-y-full">
+                        <div className="overflow-hidden pb-2 md:pb-0">
+                            <h2 className="reveal-text text-[15vw] md:text-8xl lg:text-9xl font-black text-lime-400 font-oswald uppercase leading-[0.85] md:translate-y-[110%] will-change-transform">
                                 WORK
                             </h2>
                         </div>
-
-
                     </div>
-
                 </div>
 
-                {/* The Steps */}
+                {/* The Step Cards */}
                 {steps.map((step) => (
                     <div
                         key={step.id}
-                        className="relative w-[85vw] md:w-[35vw] h-[60vh] md:h-[70vh] shrink-0 bg-zinc-950/80 border border-white/10 p-8 md:p-12 flex flex-col justify-between group hover:border-lime-400/50 transition-colors duration-500 backdrop-blur-md"
+                        className="mobile-step-card relative w-full md:w-[400px] lg:w-[450px] h-[300px] md:h-[60vh] lg:h-[70vh] shrink-0 bg-zinc-950/80 border border-white/10 p-8 md:p-12 flex flex-col justify-between group hover:border-lime-400/50 transition-colors duration-500 backdrop-blur-md"
                     >
-                        {/* Step Number */}
-                        <div className="text-8xl md:text-[12rem] font-black text-white/5 font-oswald leading-none absolute top-0 right-0 p-4 select-none group-hover:text-lime-400/10 transition-colors duration-500">
+                        {/* Step Number Background */}
+                        <div className="text-8xl md:text-[10rem] lg:text-[12rem] font-black text-white/5 font-oswald leading-none absolute top-4 right-4 md:top-0 md:right-0 md:p-4 select-none group-hover:text-lime-400/10 transition-colors duration-500 pointer-events-none">
                             {step.id}
                         </div>
 
+                        {/* Content */}
                         <div className="relative z-10 mt-auto">
-                            <h3 className="text-4xl md:text-5xl font-bold text-white font-oswald mb-6 uppercase">
+                            <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-oswald mb-4 md:mb-6 uppercase tracking-wide group-hover:text-lime-300 transition-colors">
                                 {step.title}
                             </h3>
-                            <div className="h-1 w-20 bg-lime-400 mb-6" />
-                            <p className="text-lg md:text-xl text-zinc-400 font-sans leading-relaxed max-w-sm">
+                            <div className="h-1 w-16 md:w-20 bg-lime-400 mb-4 md:mb-6" />
+                            <p className="text-base md:text-lg lg:text-xl text-zinc-400 font-sans leading-relaxed max-w-sm">
                                 {step.text}
                             </p>
                         </div>
