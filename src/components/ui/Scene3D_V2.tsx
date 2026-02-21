@@ -143,6 +143,10 @@ export default function Scene3D_V3() {
         gl={{ antialias: true }}
         eventSource={eventSource}
         eventPrefix="client"
+        style={{
+          pointerEvents: "none",
+          overflow: "hidden"
+        }}
       >
         {/* Fog creates the "Infinite Distance" fade effect */}
         <fog attach="fog" args={['#000000', 10, 50]} />

@@ -58,28 +58,33 @@ export default function CustomCursor() {
 
     return (
         <>
-            {/* Main Cursor Dot - Fixed position, updated via transform */}
+            {/* Main Cursor Dot - Wrapper for positioning */}
             <div
                 ref={cursorRef}
-                className={cn(
-                    "fixed top-0 left-0 w-3 h-3 bg-lime-400 rounded-full pointer-events-none z-[10000] mix-blend-difference transition-[width,height,opacity] duration-200 ease-out will-change-transform -translate-x-1/2 -translate-y-1/2",
-                    // Use margin to center the 3x3 dot
-                    "-ml-[6px] -mt-[6px]",
-                    // Scale to 0 on hover (disappear) as requested
-                    isHovering ? "scale-0 opacity-0" : "scale-100 opacity-100"
-                )}
-            />
+                className="fixed top-0 left-0 z-[10000] pointer-events-none will-change-transform"
+            >
+                {/* Inner Dot - For styling and scaling */}
+                <div
+                    className={cn(
+                        "w-4 h-4 bg-lime-400 rounded-full mix-blend-difference transition-all duration-200 ease-out -translate-x-1/2 -translate-y-1/2",
+                        isHovering ? "scale-0 opacity-0" : "scale-100 opacity-100"
+                    )}
+                />
+            </div>
 
-            {/* Cursor Follower (Ring) */}
+            {/* Cursor Follower (Ring) - Wrapper for positioning */}
             <div
                 ref={followerRef}
-                className={cn(
-                    "fixed top-0 left-0 w-10 h-10 border border-lime-400 rounded-full pointer-events-none z-[9999] mix-blend-difference transition-all duration-300 ease-out will-change-transform",
-                    // Center via margin
-                    "-ml-[20px] -mt-[20px]",
-                    isHovering ? "scale-150 bg-lime-400/20 border-transparent" : "scale-100"
-                )}
-            />
+                className="fixed top-0 left-0 z-[9999] pointer-events-none will-change-transform"
+            >
+                {/* Inner Ring - For styling and scaling */}
+                <div
+                    className={cn(
+                        "w-10 h-10 border border-lime-400 rounded-full mix-blend-difference transition-all duration-300 ease-out -translate-x-1/2 -translate-y-1/2",
+                        isHovering ? "scale-110 bg-lime-400/20 border-transparent" : "scale-100"
+                    )}
+                />
+            </div>
         </>
     );
 }
