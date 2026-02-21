@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -40,220 +40,145 @@ const services = [
 ];
 
 export default function Services() {
-  const container = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const cardsContainerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  useGSAP(() => {
-    // Media query to only run complex animation on desktop
-    const mm = gsap.matchMedia();
-
-    mm.add("(min-width: 768px)", () => {
-      // Setup: Cards 2, 3, 4 start off-screen
-      const cards = gsap.utils.toArray(".service-card") as HTMLElement[];
-
-      // Initial state for title
-      if (titleRef.current) {
-        gsap.set(titleRef.current, {
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          xPercent: -50,
-          yPercent: -50,
-          zIndex: 10,
-        });
-      }
-
-      // Initial state for cards
-      cards.forEach((card, i) => {
-        if (i > 0) {
-          gsap.set(card, {
-            yPercent: 120, // Push them further down initially
-            opacity: 0,
-            scale: 0.9,
-            force3D: true
-          });
-        } else {
-          gsap.set(card, {
-            yPercent: 120,
-            opacity: 0,
-            scale: 0.9,
-            force3D: true
-          });
-        }
-      });
-
-      const tl = gsap.timeline({
+  useGSAP(
+    () => {
+      // Elegant staggered entrance for the list items
+      gsap.from(".service-row", {
         scrollTrigger: {
-          trigger: container.current,
-          pin: true,
-          start: "top top",
-          end: "+=2500", // Slightly shorter scroll distance for snappier feel
-          scrub: 1.5, // Creating softer catch-up for smoothness
-          anticipatePin: 1,
-        }
+          trigger: containerRef.current,
+          start: "top 75%",
+        },
+        y: 60,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.15,
+        ease: "power3.out",
       });
 
-      // 1. Move Title Up - Keep it visible & high
-      if (titleRef.current) {
-        tl.to(titleRef.current, {
-          scale: 0.8, // Don't scale down too much
-          top: "5%",
-          yPercent: 0,
-          duration: 0.5,
-          ease: "power2.inOut",
-        });
-      }
-
-      // 2. Bring in Card 1
-      if (cards[0]) {
-        tl.to(cards[0], {
-          yPercent: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 1,
-          ease: "power3.out",
-        }, "<+=0.1");
-      }
-
-      // 3. Stacking Animation for subsequent cards
-      for (let i = 1; i < cards.length; i++) {
-        // More subtle scale down of previous card
-        if (cards[i - 1]) {
-          tl.to(cards[i - 1], {
-            scale: 1 - (i * 0.05), // Subtle scale down for stacking effect
-            yPercent: 0, // Stay in place
-            opacity: 1, // Keep visible
-            filter: "brightness(0.5)", // Darken slightly to show depth
-            duration: 0.8,
-            ease: "power2.out",
-          }, `+=0.5`); // Consistent reading time gap
-        }
-
-        // Current card slides up
-        if (cards[i]) {
-          tl.to(cards[i], {
-            yPercent: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 1,
-            ease: "power3.out",
-          }, "<+=0.1"); // Slide in while previous one settles
-        }
-      }
-    });
-
-    // Mobile animation (simple vertical scroll)
-    mm.add("(max-width: 767px)", () => {
-      (gsap.utils.toArray(".service-card") as HTMLElement[]).forEach((card) => {
-        gsap.from(card, {
-          scrollTrigger: {
-            trigger: card,
-            start: "top 80%",
-          },
-          y: 50,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power2.out"
-        });
+      // Simple parallax for the background glow
+      gsap.to(".glow-orb", {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+        yPercent: 50,
+        ease: "none",
       });
-    });
-
-    return () => mm.revert();
-  }, { scope: container });
+    },
+    { scope: containerRef }
+  );
 
   return (
     <section
-      ref={container}
+      ref={containerRef}
       id="services"
-      className="relative min-h-screen w-full overflow-hidden bg-transparent"
+      className="relative w-full min-h-screen py-24 md:py-32 bg-transparent overflow-hidden"
     >
-      {/* Animated background grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)]" />
+      {/* Subtle background glow */}
+      <div className="glow-orb absolute top-0 right-0 w-[60vw] h-[60vh] bg-lime-500/5 rounded-full blur-[150px] pointer-events-none" />
 
-      {/* Gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-lime-500/20 rounded-full blur-[120px] animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] animate-pulse delay-1000" />
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
+        {/* Section Header */}
+        <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/10 pb-8">
+          <h2 className="text-5xl md:text-7xl font-black font-oswald text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600 uppercase tracking-tighter">
+            Our Services
+          </h2>
+          <p className="text-zinc-400 max-w-sm text-lg font-light leading-relaxed">
+            End-to-end digital solutions designed to elevate your brand and drive real business growth.
+          </p>
+        </div>
 
-      {/* Title - Increased z-index significantly */}
-      <h2
-        ref={titleRef}
-        className="z-50 text-[12vw] md:text-[10vw] leading-none font-black font-oswald text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600 whitespace-nowrap select-none drop-shadow-2xl will-change-transform pointer-events-none text-center"
-      >
-        SERVICES
-      </h2>
+        {/* Interactive List */}
+        <div className="flex flex-col w-full">
+          {services.map((service, index) => {
+            const isActive = hoveredIndex === index;
 
-      <div className="container mx-auto px-4 relative z-10 h-full flex items-center justify-center">
-        {/* Mobile: vertical list. Desktop: stacked container for pin animation. */}
-        <div
-          ref={cardsContainerRef}
-          className="w-full max-w-[420px] flex flex-col gap-6 md:block md:relative md:max-w-[650px] md:h-[400px] md:mt-[250px]"
-        >
-          {services.map((service, index) => (
-            <article
-              key={service.id}
-              className="service-card group relative w-full md:absolute md:inset-0 md:h-full"
-              style={{ zIndex: index + 1, backfaceVisibility: "hidden", transform: "translateZ(0)" }} // Ensure natural stacking order
-            >
-              {/* Card - Glassmorphism */}
-              <div className="relative bg-zinc-900 border border-white/10 rounded-[2rem] p-6 md:p-8 flex flex-col overflow-hidden transition-all duration-300 shadow-2xl shadow-black md:h-full justify-between">
+            return (
+              <div
+                key={service.id}
+                className="service-row group relative border-b border-white/10 py-8 md:py-12 cursor-pointer transition-colors duration-500 hover:border-lime-500/30"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                {/* Hover Background Fill */}
+                <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/0 via-zinc-900/40 to-zinc-900/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                {/* Hover Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-lime-500/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-12">
 
-                <div className="flex md:flex-row flex-col md:items-start md:justify-between gap-4">
-                  <div>
-                    {/* Header: Number & Icon */}
-                    <div className="flex items-center gap-4 mb-4">
-                      <span className="text-4xl md:text-5xl font-light font-oswald text-zinc-700 select-none">
-                        {service.id}
-                      </span>
-                      {/* Title */}
-                      <h3 className="text-2xl md:text-3xl font-bold font-oswald text-white tracking-wide group-hover:text-lime-400 transition-colors duration-300">
-                        {service.title}
-                      </h3>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-5 md:mb-6 font-light max-w-md">
-                      {service.desc}
-                    </p>
+                  {/* Left: Number & Title */}
+                  <div className="flex items-center gap-6 md:gap-12 w-full md:w-auto">
+                    <span className="text-2xl md:text-4xl font-light font-oswald text-zinc-600 group-hover:text-lime-500 transition-colors duration-500">
+                      {service.id}
+                    </span>
+                    <h3 className="text-4xl md:text-6xl font-black font-oswald text-zinc-300 group-hover:text-white transition-colors duration-500 tracking-wide uppercase">
+                      {service.title}
+                    </h3>
                   </div>
 
-                  {/* Action Button - Repositioned for wide layout */}
-                  <div className="group/icon p-3 rounded-full bg-white/5 border border-white/10 hover:bg-lime-500 hover:border-lime-500 transition-all duration-300 self-start md:self-start">
-                    <ArrowUpRight className="w-6 h-6 text-white group-hover/icon:text-black transition-colors duration-300" />
+                  {/* Right: Icon */}
+                  <div className="hidden md:flex items-center justify-center w-16 h-16 rounded-full border border-white/10 bg-black/20 group-hover:bg-lime-500 group-hover:border-lime-500 transition-all duration-500 shrink-0">
+                    <ArrowUpRight className="w-8 h-8 text-white group-hover:text-black transition-colors duration-500" />
                   </div>
                 </div>
 
+                {/* Expanding Content Container (CSS Grid trick for smooth height animation) */}
+                <div
+                  className="grid transition-all duration-500 ease-in-out"
+                  style={{
+                    gridTemplateRows: isActive ? "1fr" : "0fr",
+                    opacity: isActive ? 1 : 0,
+                  }}
+                >
+                  <div className="overflow-hidden">
+                    <div className="pt-8 md:pt-12 flex flex-col md:flex-row gap-8 md:gap-24 pl-[4.5rem] md:pl-[6.5rem]">
 
-                {/* Features & Tags Container */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-6 border-t border-white/5">
-                  {/* Features List */}
-                  <div className="space-y-2">
-                    {services[index].features.map((feature) => (
-                      <div key={feature} className="flex items-center gap-3 text-zinc-500">
-                        <div className="w-1.5 h-1.5 rounded-full bg-lime-500/50" />
-                        <span className="text-xs uppercase tracking-wider font-medium">{feature}</span>
+                      {/* Description */}
+                      <p className="text-zinc-400 text-lg font-light leading-relaxed max-w-xl">
+                        {service.desc}
+                      </p>
+
+                      {/* Features & Tags */}
+                      <div className="flex flex-col gap-6">
+                        <ul className="space-y-3">
+                          {service.features.map((feature) => (
+                            <li key={feature} className="flex items-center gap-3 text-zinc-300">
+                              <div className="w-1.5 h-1.5 rounded-full bg-lime-500" />
+                              <span className="text-sm font-medium tracking-wide">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
+                          {service.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-white/10 text-zinc-400"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    ))}
-                  </div>
 
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {service.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-widest border border-white/5 bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white transition-all duration-300"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    </div>
                   </div>
                 </div>
+
+                {/* Mobile Icon (Visible only on small screens) */}
+                <div className="md:hidden mt-6 flex justify-end">
+                  <div className="flex items-center gap-2 text-lime-400 text-sm uppercase tracking-widest font-bold">
+                    Explore <ArrowUpRight className="w-4 h-4" />
+                  </div>
+                </div>
+
               </div>
-            </article>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
