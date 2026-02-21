@@ -70,13 +70,15 @@ export default function Services() {
           gsap.set(card, {
             yPercent: 120, // Push them further down initially
             opacity: 0,
-            scale: 0.9
+            scale: 0.9,
+            force3D: true
           });
         } else {
           gsap.set(card, {
             yPercent: 120,
             opacity: 0,
-            scale: 0.9
+            scale: 0.9,
+            force3D: true
           });
         }
       });
@@ -119,12 +121,13 @@ export default function Services() {
         // More subtle scale down of previous card
         if (cards[i - 1]) {
           tl.to(cards[i - 1], {
-            scale: 0.95 - (i * 0.03),
-            y: -20 * i,
-            filter: "brightness(0.7)",
+            scale: 1 - (i * 0.05), // Subtle scale down for stacking effect
+            yPercent: 0, // Stay in place
+            opacity: 1, // Keep visible
+            filter: "brightness(0.5)", // Darken slightly to show depth
             duration: 0.8,
-            ease: "power2.inOut"
-          }, `card-${i}`);
+            ease: "power2.out",
+          }, `+=0.5`); // Consistent reading time gap
         }
 
         // Current card slides up
@@ -135,7 +138,7 @@ export default function Services() {
             scale: 1,
             duration: 1,
             ease: "power3.out",
-          }, `card-${i}-=0.6`);
+          }, "<+=0.1"); // Slide in while previous one settles
         }
       }
     });
@@ -184,60 +187,69 @@ export default function Services() {
         {/* Mobile: vertical list. Desktop: stacked container for pin animation. */}
         <div
           ref={cardsContainerRef}
-          className="w-full max-w-[420px] flex flex-col gap-6 md:block md:relative md:max-w-[350px] md:aspect-[3/4] md:mt-[150px]"
+          className="w-full max-w-[420px] flex flex-col gap-6 md:block md:relative md:max-w-[650px] md:h-[400px] md:mt-[250px]"
         >
           {services.map((service, index) => (
             <article
               key={service.id}
-              className="service-card relative w-full md:absolute md:inset-0 md:h-full"
-              style={{ zIndex: index + 1 }} // Ensure natural stacking order
+              className="service-card group relative w-full md:absolute md:inset-0 md:h-full"
+              style={{ zIndex: index + 1, backfaceVisibility: "hidden", transform: "translateZ(0)" }} // Ensure natural stacking order
             >
               {/* Card - Glassmorphism */}
-              <div className="relative bg-zinc-900 border border-white/10 rounded-[2rem] p-6 md:p-8 flex flex-col overflow-hidden transition-all duration-300 shadow-2xl shadow-black md:h-full">
+              <div className="relative bg-zinc-900 border border-white/10 rounded-[2rem] p-6 md:p-8 flex flex-col overflow-hidden transition-all duration-300 shadow-2xl shadow-black md:h-full justify-between">
 
                 {/* Hover Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-b from-lime-500/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                {/* Header: Number & Icon */}
-                <div className="flex items-start justify-between mb-6 md:mb-8">
-                  <span className="text-4xl md:text-5xl font-light font-oswald text-zinc-700 select-none">
-                    {service.id}
-                  </span>
-                  <div className="group/icon p-2 rounded-full bg-white/5 border border-white/10 hover:bg-lime-500 hover:border-lime-500 transition-all duration-300">
-                    <ArrowUpRight className="w-5 h-5 text-white group-hover/icon:text-black transition-colors duration-300" />
+                <div className="flex md:flex-row flex-col md:items-start md:justify-between gap-4">
+                  <div>
+                    {/* Header: Number & Icon */}
+                    <div className="flex items-center gap-4 mb-4">
+                      <span className="text-4xl md:text-5xl font-light font-oswald text-zinc-700 select-none">
+                        {service.id}
+                      </span>
+                      {/* Title */}
+                      <h3 className="text-2xl md:text-3xl font-bold font-oswald text-white tracking-wide group-hover:text-lime-400 transition-colors duration-300">
+                        {service.title}
+                      </h3>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-zinc-400 text-sm leading-relaxed mb-5 md:mb-6 font-light max-w-md">
+                      {service.desc}
+                    </p>
+                  </div>
+
+                  {/* Action Button - Repositioned for wide layout */}
+                  <div className="group/icon p-3 rounded-full bg-white/5 border border-white/10 hover:bg-lime-500 hover:border-lime-500 transition-all duration-300 self-start md:self-start">
+                    <ArrowUpRight className="w-6 h-6 text-white group-hover/icon:text-black transition-colors duration-300" />
                   </div>
                 </div>
 
-                {/* Title */}
-                <h3 className="text-2xl md:text-3xl font-bold font-oswald text-white mb-3 md:mb-4 tracking-wide group-hover:text-lime-400 transition-colors duration-300">
-                  {service.title}
-                </h3>
 
-                {/* Description */}
-                <p className="text-zinc-400 text-sm leading-relaxed mb-5 md:mb-6 font-light">
-                  {service.desc}
-                </p>
+                {/* Features & Tags Container */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-6 border-t border-white/5">
+                  {/* Features List */}
+                  <div className="space-y-2">
+                    {services[index].features.map((feature) => (
+                      <div key={feature} className="flex items-center gap-3 text-zinc-500">
+                        <div className="w-1.5 h-1.5 rounded-full bg-lime-500/50" />
+                        <span className="text-xs uppercase tracking-wider font-medium">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
 
-                {/* Features List */}
-                <div className="mb-6 space-y-2 md:flex-grow">
-                  {service.features.map((feature) => (
-                    <div key={feature} className="flex items-center gap-3 text-zinc-500">
-                      <div className="w-1 h-1 rounded-full bg-lime-500/50" />
-                      <span className="text-xs tracking-wide">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 pt-6 border-t border-white/5">
-                  {service.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-widest border border-white/5 bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white transition-all duration-300"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {service.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-widest border border-white/5 bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white transition-all duration-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             </article>
