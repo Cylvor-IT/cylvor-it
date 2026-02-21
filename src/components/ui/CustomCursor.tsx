@@ -81,7 +81,7 @@ export default function CustomCursor() {
                 <div
                     className={cn(
                         "w-10 h-10 border border-lime-400 rounded-full mix-blend-difference transition-all duration-300 ease-out -translate-x-1/2 -translate-y-1/2",
-                        isHovering ? "scale-150 bg-lime-400/20 border-transparent" : "scale-100"
+                        isHovering ? "scale-110 bg-lime-400/20 border-transparent" : "scale-100"
                     )}
                 />
             </div>
