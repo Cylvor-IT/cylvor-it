@@ -36,25 +36,27 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${oswald.variable} font-sans bg-black text-white antialiased`}>
         <PageTransitionProvider>
-        {/* GLOBAL 3D BACKGROUND 
+          {/* GLOBAL 3D BACKGROUND 
             - Fixed: Stays in place while scrolling
             - z-0: Behind content
         */}
-        <Preloader />
-        <CustomCursor />
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <Scene3D_V2 />
-        </div>
-
-        <SmoothScroll>
-          <Navbar />
-
-          {/* Ensure children have a relative z-index to sit ON TOP of the background */}
-          <div className="relative z-10">
-            {children}
+          <Preloader />
+          <CustomCursor />
+          <div className="fixed inset-0 z-0 pointer-events-none">
+            <Scene3D_V2 />
+            {/* Subtle Dark Gradient Overlay / Tint */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/80 pointer-events-none" />
           </div>
 
-        </SmoothScroll>
+          <SmoothScroll>
+            <Navbar />
+
+            {/* Ensure children have a relative z-index to sit ON TOP of the background */}
+            <div className="relative z-10">
+              {children}
+            </div>
+
+          </SmoothScroll>
           <div
             aria-hidden="true"
             className="pointer-events-none fixed inset-x-0 bottom-0 z-[9998] h-px bg-lime-400"

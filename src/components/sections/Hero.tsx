@@ -16,43 +16,51 @@ export default function Hero() {
   useGSAP(() => {
     if (!textRef.current || !container.current) return;
 
-    const getScrollAmount = () => {
-      const scrollWidth = textRef.current?.scrollWidth || 0;
-      const windowWidth = window.innerWidth;
+    const mm = gsap.matchMedia();
 
-      return -(scrollWidth - windowWidth + (windowWidth * 0.5));
-    };
+    // --- DESKTOP VIEW ONLY (Animations remain exactly the same) ---
+    mm.add("(min-width: 768px)", () => {
+      const getScrollAmount = () => {
+        const scrollWidth = textRef.current?.scrollWidth || 0;
+        const windowWidth = window.innerWidth;
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: container.current,
-        pin: true,
-        pinSpacing: true,
-        scrub: 0.5,
-        start: "top top",
-        end: "+=2000",
-        invalidateOnRefresh: true,
-        anticipatePin: 1,
-      }
+        return -(scrollWidth - windowWidth + (windowWidth * 0.5));
+      };
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container.current,
+          pin: true,
+          pinSpacing: true,
+          scrub: 0.5,
+          start: "top top",
+          end: "+=2000",
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+        }
+      });
+
+      tl.to(textRef.current, {
+        x: () => getScrollAmount(),
+        ease: "none",
+      });
+
+      gsap.to(".hero-center-visual", {
+        opacity: 0,
+        y: -50,
+        scale: 0.95,
+        scrollTrigger: {
+          trigger: container.current,
+          start: "top top",
+          end: "300px top",
+          scrub: true,
+        }
+      });
     });
 
-    tl.to(textRef.current, {
-      x: () => getScrollAmount(),
-      ease: "none",
-    });
+    // Mobile has no GSAP scroll logic, it acts normally.
 
-    gsap.to(".hero-center-visual", {
-      opacity: 0,
-      y: -50,
-      scale: 0.95,
-      scrollTrigger: {
-        trigger: container.current,
-        start: "top top",
-        end: "300px top",
-        scrub: true,
-      }
-    });
-
+    return () => mm.revert();
   }, { scope: container });
 
   const scrollToSection = (id: string) => {
@@ -63,13 +71,17 @@ export default function Hero() {
     <section
       ref={container}
       id="hero"
-      className="h-screen w-full relative flex flex-col justify-end bg-transparent overflow-hidden pt-24 pb-4 md:pt-32 md:pb-10"
+      // Mobile: uses min-h-[75svh] and justify-center to pull the next section up closer
+      // Desktop: uses h-screen and justify-end (unchanged)
+      className="min-h-[75svh] md:min-h-0 md:h-screen w-full relative flex flex-col justify-center md:justify-end bg-transparent overflow-hidden pt-32 pb-12 md:pt-32 md:pb-10"
     >
       {/* --- CENTER VISUAL --- */}
-      <div className="hero-center-visual absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] z-20 flex flex-col items-center justify-center text-center w-full max-w-2xl px-6">
-        <div className="mb-16 flex flex-col items-center gap-6">
+      {/* Mobile: relative flow so it centers nicely */}
+      {/* Desktop: absolute positioning (unchanged) */}
+      <div className="hero-center-visual relative md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-[60%] z-20 flex flex-col items-center justify-center text-center w-full max-w-2xl px-4 md:px-6 mx-auto md:mt-0">
+        <div className="mb-12 md:mb-16 flex flex-col items-center gap-4 md:gap-6">
 
-          <p className="font-sans text-white text-sm md:text-base uppercase tracking-[0.2em]">
+          <p className="font-sans text-white text-xs md:text-base uppercase tracking-[0.2em]">
             Next Generation Experience
           </p>
 
@@ -80,12 +92,10 @@ export default function Hero() {
             </span>
           </h2>
 
-          {/* --- UPDATED BUTTON --- */}
-          {/* Removed clipPath style to make it a standard rectangle */}
           <MagneticWrapper strength={0.4} range={100}>
             <button
               onClick={() => scrollToSection('services')}
-              className="relative flex items-center gap-3 px-10 py-4 mt-4 bg-lime-400 text-black text-sm md:text-base font-bold uppercase tracking-wider transition-all font-oswald shadow-[0_0_20px_rgba(163,230,53,0.4)] hover:shadow-[0_0_35px_rgba(163,230,53,0.6)] overflow-hidden group"
+              className="relative flex items-center gap-3 px-8 py-3 md:px-10 md:py-4 mt-2 md:mt-4 bg-lime-400 text-black text-sm md:text-base font-bold uppercase tracking-wider transition-all font-oswald shadow-[0_0_20px_rgba(163,230,53,0.4)] hover:shadow-[0_0_35px_rgba(163,230,53,0.6)] overflow-hidden group"
             >
               {/* 1. SLIDING BACKGROUND (White) */}
               <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
@@ -106,18 +116,19 @@ export default function Hero() {
         </div>
 
         <MagneticWrapper strength={0.2} range={60}>
-          <div className="flex flex-col items-center gap-3 animate-bounce opacity-80">
+          <div className="flex flex-col items-center gap-2 md:gap-3 animate-bounce opacity-80">
             <span className="text-[10px] uppercase tracking-[0.3em] text-lime-400 font-bold font-sans">Scroll</span>
             <ArrowDown className="w-4 h-4 text-lime-400" />
           </div>
         </MagneticWrapper>
       </div>
 
-      {/* --- BOTTOM SCROLLING TEXT --- */}
-      <div className="w-full relative z-10 flex items-end">
+      {/* --- BOTTOM TEXT --- */}
+      {/* Added 'hidden md:flex' to completely hide this block on mobile screens */}
+      <div className="hidden md:flex w-full relative z-10 items-end px-4 md:px-0">
         <h1
           ref={textRef}
-          className="text-[22vh] md:text-[30vh] leading-[0.9] font-black text-white whitespace-nowrap font-oswald uppercase tracking-tighter will-change-transform pl-[10vw] select-none flex items-end"
+          className="md:text-[30vh] md:leading-[0.9] font-black text-white md:whitespace-nowrap md:text-left font-oswald uppercase tracking-tighter will-change-transform md:pl-[10vw] select-none items-end mx-auto md:mx-0"
         >
           Transforming Ideas Into Digital Reality
         </h1>
