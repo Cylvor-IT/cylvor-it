@@ -20,10 +20,42 @@ const oswald = Oswald({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cylvorit.com"),
-  title: "Cylvor IT | Modern Digital Solutions",
+  title: {
+    default: "Cylvor IT | Modern Digital Solutions",
+    template: "%s | Cylvor IT",
+  },
   description: "Web development, UI/UX, and digital services.",
+  manifest: "/manifest.webmanifest",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: "https://cylvorit.com",
+    siteName: "Cylvor IT",
+    title: "Cylvor IT | Modern Digital Solutions",
+    description: "Web development, UI/UX, and digital services.",
+    images: [
+      {
+        url: "/assets/logo.svg",
+        alt: "Cylvor IT",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cylvor IT | Modern Digital Solutions",
+    description: "Web development, UI/UX, and digital services.",
+    images: ["/assets/logo.svg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: "/assets/logo.svg",
+    shortcut: "/assets/logo.svg",
+    apple: "/assets/logo.svg",
   },
 };
 
