@@ -76,43 +76,32 @@ export default function Services() {
   return (
     <section
       ref={containerRef}
-      id="services"
-      className="relative w-full min-h-screen py-24 md:py-32 bg-transparent overflow-hidden"
+      id="services-list"
+      className="relative w-full bg-transparent pt-32 pb-16 md:pt-[35vh] md:pb-32"
     >
       {/* Subtle background glow */}
-      <div className="glow-orb absolute top-0 right-0 w-[60vw] h-[60vh] bg-lime-500/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="glow-orb absolute top-0 right-0 w-[60vw] h-[60vh] bg-lime-500/5 rounded-full blur-[150px] pointer-events-none z-0" />
 
-      <div className="container mx-auto px-6 md:px-12 relative z-10">
-        {/* Section Header */}
-        <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/10 pb-8">
-          <h2 className="text-5xl md:text-7xl font-black font-oswald text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600 uppercase tracking-tighter">
-            Our Services
-          </h2>
-          <p className="text-zinc-400 max-w-sm text-lg font-light leading-relaxed">
-            End-to-end digital solutions designed to elevate your brand and drive real business growth.
-          </p>
-        </div>
-
+      <div className="relative z-20 container mx-auto px-6 md:px-12 flex flex-col justify-start">
         {/* Interactive List */}
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full max-w-7xl mx-auto">
           {services.map((service, index) => {
             const isActive = hoveredIndex === index;
 
             return (
               <div
                 key={service.id}
-                className="service-row group relative border-b border-white/10 py-8 md:py-12 cursor-pointer transition-colors duration-500 hover:border-lime-500/30"
+                className="service-row group relative border-b border-white/10 py-10 md:py-16 cursor-pointer transition-colors duration-500 hover:border-lime-500/30"
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
                 {/* Hover Background Fill */}
                 <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/0 via-zinc-900/40 to-zinc-900/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-12">
-
+                <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-16">
                   {/* Left: Number & Title */}
                   <div className="flex items-center gap-6 md:gap-12 w-full md:w-auto">
-                    <span className="text-2xl md:text-4xl font-light font-oswald text-zinc-600 group-hover:text-lime-500 transition-colors duration-500">
+                    <span className="text-3xl md:text-5xl font-light font-oswald text-zinc-600 group-hover:text-lime-500 transition-colors duration-500">
                       {service.id}
                     </span>
                     <h3 className="text-4xl md:text-6xl font-black font-oswald text-zinc-300 group-hover:text-white transition-colors duration-500 tracking-wide uppercase">
@@ -126,7 +115,7 @@ export default function Services() {
                   </div>
                 </div>
 
-                {/* Expanding Content Container (CSS Grid trick for smooth height animation) */}
+                {/* Expanding Content Container */}
                 <div
                   className="grid transition-all duration-500 ease-in-out"
                   style={{
@@ -135,16 +124,15 @@ export default function Services() {
                   }}
                 >
                   <div className="overflow-hidden">
-                    <div className="pt-8 md:pt-12 flex flex-col md:flex-row gap-8 md:gap-24 pl-[4.5rem] md:pl-[6.5rem]">
-
+                    <div className="pt-10 md:pt-14 flex flex-col md:flex-row gap-8 md:gap-24 pl-[4.5rem] md:pl-[6.5rem]">
                       {/* Description */}
-                      <p className="text-zinc-400 text-lg font-light leading-relaxed max-w-xl">
+                      <p className="text-zinc-400 text-base md:text-lg font-light leading-relaxed max-w-xl">
                         {service.desc}
                       </p>
 
                       {/* Features & Tags */}
-                      <div className="flex flex-col gap-6">
-                        <ul className="space-y-3">
+                      <div className="flex flex-col gap-4">
+                        <ul className="space-y-2">
                           {service.features.map((feature) => (
                             <li key={feature} className="flex items-center gap-3 text-zinc-300">
                               <div className="w-1.5 h-1.5 rounded-full bg-lime-500" />
@@ -153,26 +141,25 @@ export default function Services() {
                           ))}
                         </ul>
 
-                        <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
+                        <div className="flex flex-wrap gap-2 pt-3 border-t border-white/10">
                           {service.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-white/10 text-zinc-400"
+                              className="px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider border border-white/10 text-zinc-400"
                             >
                               {tag}
                             </span>
                           ))}
                         </div>
                       </div>
-
                     </div>
                   </div>
                 </div>
 
-                {/* Mobile Icon (Visible only on small screens) */}
-                <div className="md:hidden mt-6 flex justify-end">
-                  <div className="flex items-center gap-2 text-lime-400 text-sm uppercase tracking-widest font-bold">
-                    Explore <ArrowUpRight className="w-4 h-4" />
+                {/* Mobile Icon */}
+                <div className="md:hidden mt-4 flex justify-end">
+                  <div className="flex items-center gap-2 text-lime-400 text-xs uppercase tracking-widest font-bold">
+                    Explore <ArrowUpRight className="w-3 h-3" />
                   </div>
                 </div>
 
@@ -181,6 +168,7 @@ export default function Services() {
           })}
         </div>
       </div>
+
     </section>
   );
 }
