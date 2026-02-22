@@ -96,7 +96,7 @@ export default function Services() {
                 onMouseLeave={() => setHoveredIndex(null)}
               >
                 {/* Hover Background Fill */}
-                <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/0 via-zinc-900/40 to-zinc-900/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/0 via-zinc-900/40 to-zinc-900/0 opacity-0 group-hover:opacity-100 backdrop-blur-md transition-all duration-500 pointer-events-none" />
 
                 <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-16">
                   {/* Left: Number & Title */}
@@ -117,7 +117,7 @@ export default function Services() {
 
                 {/* Expanding Content Container */}
                 <div
-                  className="grid transition-all duration-500 ease-in-out"
+                  className="relative z-10 grid transition-all duration-500 ease-in-out"
                   style={{
                     gridTemplateRows: isActive ? "1fr" : "0fr",
                     opacity: isActive ? 1 : 0,
