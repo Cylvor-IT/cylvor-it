@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -42,6 +42,15 @@ const services = [
 export default function Services() {
   const containerRef = useRef<HTMLElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [expandedIndices, setExpandedIndices] = useState<number[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); // Set initially on client
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useGSAP(
     () => {
@@ -86,14 +95,21 @@ export default function Services() {
         {/* Interactive List */}
         <div className="flex flex-col w-full max-w-7xl mx-auto">
           {services.map((service, index) => {
-            const isActive = hoveredIndex === index;
+            const isActive = isMobile ? expandedIndices.includes(index) : hoveredIndex === index;
 
             return (
               <div
                 key={service.id}
                 className="service-row group relative border-b border-white/10 py-10 md:py-16 cursor-pointer transition-colors duration-500 hover:border-lime-500/30"
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
+                onMouseEnter={() => !isMobile && setHoveredIndex(index)}
+                onMouseLeave={() => !isMobile && setHoveredIndex(null)}
+                onClick={() => {
+                  if (isMobile) {
+                    setExpandedIndices((prev) =>
+                      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+                    );
+                  }
+                }}
               >
                 {/* Hover Background Fill */}
                 <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/0 via-zinc-900/40 to-zinc-900/0 opacity-0 group-hover:opacity-100 backdrop-blur-md transition-all duration-500 pointer-events-none" />
@@ -157,9 +173,9 @@ export default function Services() {
                 </div>
 
                 {/* Mobile Icon */}
-                <div className="md:hidden mt-4 flex justify-end">
+                <div className="md:hidden mt-4 flex justify-center">
                   <div className="flex items-center gap-2 text-lime-400 text-xs uppercase tracking-widest font-bold">
-                    Explore <ArrowUpRight className="w-3 h-3" />
+                    Explore <ArrowUpRight className="w-3 h-3 transition-transform duration-300" style={{ transform: isActive ? "rotate(90deg)" : "rotate(0deg)" }} />
                   </div>
                 </div>
 
