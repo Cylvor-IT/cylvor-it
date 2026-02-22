@@ -110,7 +110,7 @@ export default function AboutDetails() {
         <section
             ref={sectionRef}
             id="about-details"
-            className="relative w-full md:h-screen bg-transparent flex flex-col justify-center overflow-hidden"
+            className="relative w-full md:h-screen bg-transparent flex flex-col justify-center overflow-hidden pt-12 md:pt-20"
         >
             {/* Track Container 
                 - Desktop: flex-row, h-full, w-max (allows horizontal scroll)
@@ -121,7 +121,7 @@ export default function AboutDetails() {
                 className="relative z-10 flex flex-col md:flex-row gap-6 md:gap-10 w-full md:w-max h-auto md:h-full px-6 py-20 md:py-0 md:px-10 items-center will-change-transform"
             >
                 {/* Intro Card: "HOW WE WORK" */}
-                <div className="w-full md:w-[45vw] lg:w-[40vw] h-auto md:h-[60vh] shrink-0 flex flex-col justify-end md:p-8 md:border-l border-white/20 mb-12 md:mb-0">
+                <div className="w-full md:w-[45vw] lg:w-[40vw] h-auto md:h-[60vh] shrink-0 flex flex-col justify-end md:p-8 md:border-l border-white/20 mb-16 md:mb-0">
                     <div className="flex flex-col gap-0 md:gap-2">
                         {/* Line 1 */}
                         <div className="overflow-hidden pb-2 md:pb-0">

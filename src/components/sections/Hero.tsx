@@ -81,11 +81,11 @@ export default function Hero() {
       <div className="hero-center-visual relative md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-[60%] z-20 flex flex-col items-center justify-center text-center w-full max-w-2xl px-4 md:px-6 mx-auto md:mt-0">
         <div className="mb-12 md:mb-16 flex flex-col items-center gap-4 md:gap-6">
 
-          <p className="font-sans text-white text-xs md:text-base uppercase tracking-[0.2em]">
+          <p className="font-sans text-white text-sm md:text-base uppercase tracking-[0.2em]">
             Next Generation Experience
           </p>
 
-          <h2 className="text-4xl md:text-6xl font-oswald font-bold text-white uppercase leading-tight">
+          <h2 className="text-5xl md:text-6xl font-oswald font-bold text-white uppercase leading-tight">
             We Build <br />
             <span className="text-white">
               Digital Excellence
