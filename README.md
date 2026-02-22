@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cylvor IT
 
-## Getting Started
+Portfolio website built with Next.js App Router, TypeScript, GSAP, and Tailwind CSS.
 
-First, run the development server:
+## Local Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Required Site/SEO Files
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project includes the key files needed for production hosting and indexing:
 
-## Learn More
+- `src/app/robots.ts` → generates `/robots.txt`
+- `src/app/sitemap.ts` → generates `/sitemap.xml`
+- `src/app/manifest.ts` → generates `/manifest.webmanifest`
+- `src/app/layout.tsx` metadata → canonical, Open Graph, Twitter, robots, and icons
 
-To learn more about Next.js, take a look at the following resources:
+## Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Set this in Vercel (Project Settings → Environment Variables):
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `NEXT_PUBLIC_SITE_URL=https://your-domain.com`
 
-## Deploy on Vercel
+If this variable is not set, `robots.ts` and `sitemap.ts` fall back to Vercel URL or `https://cylvorit.com`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy to Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Push this repository to GitHub.
+2. Import the repo in Vercel.
+3. Framework preset: `Next.js` (auto-detected).
+4. Build command: `npm run build`.
+5. Output directory: leave empty (default for Next.js).
+6. Add env var `NEXT_PUBLIC_SITE_URL`.
+7. Deploy.
+
+After deploy, verify:
+
+- `/robots.txt`
+- `/sitemap.xml`
+- `/manifest.webmanifest`
+
+## Production Build
+
+```bash
+npm run build
+npm run start
+```
+
+
+
+
+
+Vercel Deploy (Step-by-Step)
+
+Push your project to GitHub (or GitLab/Bitbucket).
+Go to https://vercel.com, sign in, click Add New → Project.
+Import your repository and select this project.
+Vercel will auto-detect Next.js; keep defaults: Build Command npm run build, Output Directory empty.
+In Environment Variables, add NEXT_PUBLIC_SITE_URL = https://your-domain.com (or your Vercel URL first).
+Click Deploy and wait for build to finish.
+Open the deployed URL and verify pages load.
+Check SEO routes: /robots.txt, /sitemap.xml, /manifest.webmanifest.
+Add custom domain in Project Settings → Domains, then update DNS as Vercel shows.
+After DNS is active, update NEXT_PUBLIC_SITE_URL to the final domain and redeploy.
