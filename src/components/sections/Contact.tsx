@@ -147,7 +147,7 @@ export default function Contact() {
 
             {/* Info Block */}
             <div className="space-y-8">
-              <div className="flex items-start gap-4">
+              <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left gap-4">
                 <div className="p-3 bg-zinc-900 border border-white/10 rounded-full text-lime-400 shrink-0">
                   <Mail size={18} />
                 </div>
@@ -156,7 +156,7 @@ export default function Contact() {
                   <a href="mailto:hello@cylvor.it" className="text-zinc-400 font-sans text-sm hover:text-lime-400 transition-colors">hello@cylvorit.com</a>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
+              <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left gap-4">
                 <div className="p-3 bg-zinc-900 border border-white/10 rounded-full text-lime-400 shrink-0">
                   <MapPin size={18} />
                 </div>
@@ -165,7 +165,7 @@ export default function Contact() {
                   <p className="text-zinc-400 font-sans text-sm">Colombo, Sri Lanka</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
+              <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left gap-4">
                 <div className="p-3 bg-zinc-900 border border-white/10 rounded-full text-lime-400 shrink-0">
                   <Clock size={18} />
                 </div>
@@ -180,9 +180,9 @@ export default function Contact() {
             <div className="w-full h-px bg-white/10" />
 
             {/* Social Icons Row */}
-            <div>
-              <h4 className="text-zinc-500 font-mono text-[10px] tracking-widest uppercase mb-6">Follow Us</h4>
-              <div className="flex gap-4 flex-wrap">
+            <div className="flex flex-col items-center md:items-start">
+              <h4 className="text-zinc-500 font-mono text-[10px] tracking-widest uppercase mb-6 text-center md:text-left">Follow Us</h4>
+              <div className="flex gap-4 flex-wrap justify-center md:justify-start">
                 {[
                   { name: "Facebook", icon: Facebook, href: "#" },
                   { name: "Instagram", icon: Instagram, href: "#" },

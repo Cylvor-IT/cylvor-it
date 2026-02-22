@@ -112,9 +112,6 @@ export default function AboutDetails() {
             id="about-details"
             className="relative w-full md:h-screen bg-transparent flex flex-col justify-center overflow-hidden"
         >
-            {/* Background Grid */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none z-0" />
-
             {/* Track Container 
                 - Desktop: flex-row, h-full, w-max (allows horizontal scroll)
                 - Mobile: flex-col, h-auto, w-full, stacked naturally with padding
