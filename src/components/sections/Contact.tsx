@@ -55,6 +55,8 @@ const ScrambleItem = ({ children, className }: { children: string, className?: s
 export default function Contact() {
   const container = useRef(null);
   const formRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: "" });
 
   useGSAP(() => {
     const tl = gsap.timeline({
@@ -106,6 +108,22 @@ export default function Contact() {
           {/* LEFT: FORM (8 columns) */}
           <form
             ref={formRef}
+            action={async (formData) => {
+              setIsSubmitting(true);
+              setSubmitStatus({ type: null, message: "" });
+
+              const { sendContactEmail } = await import('@/app/actions/contact');
+              const result = await sendContactEmail(formData);
+
+              if (result.success) {
+                setSubmitStatus({ type: 'success', message: 'Message sent successfully! We will get back to you soon.' });
+                // Reset form fields
+                if (formRef.current) (formRef.current as HTMLFormElement).reset();
+              } else {
+                setSubmitStatus({ type: 'error', message: result.error || 'Something went wrong. Please try again.' });
+              }
+              setIsSubmitting(false);
+            }}
             className="contact-anim md:col-span-8 w-full bg-zinc-900/50 backdrop-blur-xl border border-white/5 p-6 md:p-8 rounded-xl relative group overflow-hidden"
           >
             <div className="absolute -inset-1 bg-gradient-to-r from-lime-400/0 via-lime-400/5 to-lime-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none blur-xl" />
@@ -113,30 +131,39 @@ export default function Contact() {
             <div className="relative z-10 flex flex-col gap-5 mb-8">
               <div className="group/input">
                 <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2 group-focus-within/input:text-lime-400 transition-colors">Name</label>
-                <input type="text" className="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-4 text-white text-sm focus:border-lime-400/50 focus:bg-lime-400/5 focus:outline-none transition-all placeholder-zinc-700 font-sans" placeholder="John Doe" />
+                <input name="name" type="text" required disabled={isSubmitting} className="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-4 text-white text-sm focus:border-lime-400/50 focus:bg-lime-400/5 focus:outline-none transition-all placeholder-zinc-700 font-sans disabled:opacity-50" placeholder="John Doe" />
               </div>
               <div className="group/input">
                 <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2 group-focus-within/input:text-lime-400 transition-colors">Email</label>
-                <input type="email" className="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-4 text-white text-sm focus:border-lime-400/50 focus:bg-lime-400/5 focus:outline-none transition-all placeholder-zinc-700 font-sans" placeholder="john@example.com" />
+                <input name="email" type="email" required disabled={isSubmitting} className="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-4 text-white text-sm focus:border-lime-400/50 focus:bg-lime-400/5 focus:outline-none transition-all placeholder-zinc-700 font-sans disabled:opacity-50" placeholder="john@example.com" />
               </div>
               <div className="group/input">
                 <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2 group-focus-within/input:text-lime-400 transition-colors">Message</label>
-                <textarea rows={5} className="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-4 text-white text-sm focus:border-lime-400/50 focus:bg-lime-400/5 focus:outline-none transition-all placeholder-zinc-700 font-sans resize-none" placeholder="Tell us about your project goals..." />
+                <textarea name="message" rows={5} required disabled={isSubmitting} className="w-full bg-black/40 border border-white/10 rounded-sm px-4 py-4 text-white text-sm focus:border-lime-400/50 focus:bg-lime-400/5 focus:outline-none transition-all placeholder-zinc-700 font-sans resize-none disabled:opacity-50" placeholder="Tell us about your project goals..." />
               </div>
             </div>
+
+            {submitStatus.message && (
+              <div className={`mb-6 p-4 rounded-sm text-sm ${submitStatus.type === 'success' ? 'bg-lime-400/10 text-lime-400 border border-lime-400/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'}`}>
+                {submitStatus.message}
+              </div>
+            )}
 
             <div className="flex justify-start">
               <button
                 type="submit"
-                className="relative w-full flex items-center justify-center gap-3 px-12 py-4 bg-lime-400 text-black text-sm font-bold uppercase tracking-wider transition-all font-oswald shadow-[0_0_20px_rgba(163,230,53,0.3)] hover:shadow-[0_0_35px_rgba(163,230,53,0.5)] overflow-hidden group/btn"
+                disabled={isSubmitting}
+                className="relative w-full flex items-center justify-center gap-3 px-12 py-4 bg-lime-400 text-black text-sm font-bold uppercase tracking-wider transition-all font-oswald shadow-[0_0_20px_rgba(163,230,53,0.3)] hover:shadow-[0_0_35px_rgba(163,230,53,0.5)] overflow-hidden group/btn disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 <div className="absolute inset-0 bg-white translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 ease-out z-0" />
                 <div className="relative z-10 flex items-center gap-3 group-hover/btn:text-lime-500 transition-colors duration-300">
-                  <span>Send Message</span>
-                  <div className="relative w-5 h-5 overflow-hidden flex items-center justify-center">
-                    <ArrowUpRight className="w-5 h-5 absolute transition-transform duration-300 group-hover/btn:-translate-y-[150%] group-hover/btn:translate-x-[150%]" />
-                    <ArrowUpRight className="w-5 h-5 absolute -translate-x-[150%] translate-y-[150%] transition-transform duration-300 group-hover/btn:translate-x-0 group-hover/btn:translate-y-0" />
-                  </div>
+                  <span>{isSubmitting ? "Sending..." : "Send Message"}</span>
+                  {!isSubmitting && (
+                    <div className="relative w-5 h-5 overflow-hidden flex items-center justify-center">
+                      <ArrowUpRight className="w-5 h-5 absolute transition-transform duration-300 group-hover/btn:-translate-y-[150%] group-hover/btn:translate-x-[150%]" />
+                      <ArrowUpRight className="w-5 h-5 absolute -translate-x-[150%] translate-y-[150%] transition-transform duration-300 group-hover/btn:translate-x-0 group-hover/btn:translate-y-0" />
+                    </div>
+                  )}
                 </div>
               </button>
             </div>
