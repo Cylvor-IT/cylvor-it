@@ -83,16 +83,16 @@ export default function ServicesIntro() {
         <section
             ref={container}
             id="services"
-            className="relative w-full bg-transparent flex flex-col items-center min-h-[50svh] md:h-screen overflow-visible md:overflow-hidden justify-center"
+            className="relative w-full bg-transparent flex flex-col items-center pt-8 pb-0 md:py-0 md:h-screen overflow-visible md:overflow-hidden justify-center"
         >
             {/* Subtle background glow */}
             <div className="services-glow-orb absolute top-1/4 right-0 md:top-0 md:right-0 w-[80vw] md:w-[60vw] h-[60vh] bg-lime-500/5 rounded-full blur-[150px] pointer-events-none z-0" />
 
             <h2
                 ref={titleRef}
-                className="z-10 text-[14vw] md:text-[12vw] leading-none font-black font-oswald text-white whitespace-nowrap select-none drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] will-change-transform pointer-events-none"
+                className="z-10 text-[16vw] md:text-[12vw] leading-none font-black font-oswald text-white md:whitespace-nowrap text-center md:text-left select-none drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] will-change-transform pointer-events-none"
             >
-                OUR SERVICES
+                OUR <br className="block md:hidden" /> SERVICES
             </h2>
         </section>
     );
