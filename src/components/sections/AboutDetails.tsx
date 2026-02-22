@@ -47,8 +47,9 @@ export default function AboutDetails() {
             if (!track) return;
 
             // Calculate exactly how far to slide left
-            // We add 40px (or any padding) so the last card doesn't touch the exact edge of the monitor
-            const getScrollAmount = () => -(track.scrollWidth - window.innerWidth + 80);
+            // We add ~350px of extra scroll so the last card comes into the view more naturally 
+            // without leaving a massive empty gap on the right.
+            const getScrollAmount = () => -(track.scrollWidth - window.innerWidth + 350);
 
             const tl = gsap.timeline({
                 scrollTrigger: {

@@ -14,7 +14,7 @@ import { useTransition } from "@/components/layout/PageTransitionProvider";
 const navItems = [
   { name: "About", href: "/#about" },
   { name: "Services", href: "/#services" },
-  { name: "Projects", href: "/projects" },
+  { name: "Projects", href: "/coming-soon" },
 ];
 
 const FlipLink = ({ href, children, onClick }: { href: string; children: string; onClick: (h: string) => void }) => {
@@ -95,7 +95,7 @@ export default function Navbar() {
 
   const handleLinkClick = (href: string) => {
     setIsOpen(false);
-    
+
     if (href.includes("#")) {
       const [path, hash] = href.split("#");
       // If we are already on the home page and the link is for an anchor
@@ -105,9 +105,9 @@ export default function Navbar() {
       } else {
         // Navigate to route with hash - transition needed if changing page
         if (pathname !== "/" && path === "/") {
-            triggerTransition(href);
+          triggerTransition(href);
         } else {
-            router.push(href);
+          router.push(href);
         }
       }
     } else {
