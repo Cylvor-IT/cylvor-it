@@ -61,7 +61,7 @@ export default function CustomCursor() {
             {/* Main Cursor Dot - Wrapper for positioning */}
             <div
                 ref={cursorRef}
-                className="fixed top-0 left-0 z-[10000] pointer-events-none will-change-transform"
+                className="hidden md:block fixed top-0 left-0 z-[10000] pointer-events-none will-change-transform"
             >
                 {/* Inner Dot - For styling and scaling */}
                 <div
@@ -75,7 +75,7 @@ export default function CustomCursor() {
             {/* Cursor Follower (Ring) - Wrapper for positioning */}
             <div
                 ref={followerRef}
-                className="fixed top-0 left-0 z-[9999] pointer-events-none will-change-transform"
+                className="hidden md:block fixed top-0 left-0 z-[9999] pointer-events-none will-change-transform"
             >
                 {/* Inner Ring - For styling and scaling */}
                 <div

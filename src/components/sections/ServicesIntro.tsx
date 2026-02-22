@@ -82,6 +82,7 @@ export default function ServicesIntro() {
     return (
         <section
             ref={container}
+            id="services"
             className="relative w-full bg-transparent flex flex-col items-center min-h-[50svh] md:h-screen overflow-visible md:overflow-hidden justify-center"
         >
             {/* Subtle background glow */}
