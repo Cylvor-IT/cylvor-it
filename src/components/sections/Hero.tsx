@@ -71,9 +71,9 @@ export default function Hero() {
     <section
       ref={container}
       id="hero"
-      // Mobile: uses min-h-[75svh] and justify-center to pull the next section up closer
+      // Mobile: uses h-[100svh] for full viewport height
       // Desktop: uses h-screen and justify-end (unchanged)
-      className="min-h-[75svh] md:min-h-0 md:h-screen w-full relative flex flex-col justify-center md:justify-end bg-transparent overflow-hidden pt-32 pb-12 md:pt-32 md:pb-10"
+      className="h-[100svh] md:h-screen w-full relative flex flex-col justify-center md:justify-end bg-transparent overflow-hidden pt-32 pb-12 md:pt-32 md:pb-10"
     >
       {/* --- CENTER VISUAL --- */}
       {/* Mobile: relative flow so it centers nicely */}
@@ -85,7 +85,7 @@ export default function Hero() {
             Next Generation Experience
           </p>
 
-          <h2 className="text-5xl md:text-6xl font-oswald font-bold text-white uppercase leading-tight">
+          <h2 className="text-6xl md:text-6xl font-oswald font-bold text-white uppercase leading-tight">
             We Build <br />
             <span className="text-white">
               Digital Excellence

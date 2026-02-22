@@ -122,7 +122,7 @@ export default function AboutDetails() {
             >
                 {/* Intro Card: "HOW WE WORK" */}
                 <div className="w-full md:w-[45vw] lg:w-[40vw] h-auto md:h-[60vh] shrink-0 flex flex-col justify-end md:p-8 md:border-l border-white/20 mb-16 md:mb-0">
-                    <div className="flex flex-col gap-0 md:gap-2">
+                    <div className="flex flex-col gap-0 md:gap-2 text-center md:text-left">
                         {/* Line 1 */}
                         <div className="overflow-hidden pb-2 md:pb-0">
                             <h2 className="reveal-text text-[15vw] md:text-8xl lg:text-9xl font-black text-white font-oswald uppercase leading-[0.85] md:translate-y-[110%] will-change-transform">
