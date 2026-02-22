@@ -26,7 +26,7 @@ export default function ComingSoonPage() {
                 </h1>
 
                 <p className="text-lg md:text-xl text-zinc-400 max-w-lg mb-12 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                    We're working hard to bring you something amazing. Our new project will be launching very soon.
+                    We&apos;re working hard to bring you something amazing. Our new project will be launching very soon.
                 </p>
 
                 <div className="animate-fade-in-up" style={{ animationDelay: '300ms' }}>

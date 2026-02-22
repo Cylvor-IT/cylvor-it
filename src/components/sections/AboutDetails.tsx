@@ -89,7 +89,7 @@ export default function AboutDetails() {
             gsap.set(".reveal-text", { y: "0%" });
 
             // Fade in each step card as it enters the viewport
-            gsap.utils.toArray(".mobile-step-card").forEach((card: any) => {
+            gsap.utils.toArray<HTMLElement>(".mobile-step-card").forEach((card) => {
                 gsap.from(card, {
                     scrollTrigger: {
                         trigger: card,
